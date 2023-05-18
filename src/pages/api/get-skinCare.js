@@ -1,3 +1,4 @@
+// api/get-skinCare.js
 import mongoose from "mongoose";
 import Service from "../../../schemas/Service";
 
@@ -14,9 +15,9 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const services = await Service.find({});
-        console.log("Services from DB:", services);
-        res.status(200).json({ success: true, data: services });
+        const skinCareServices = await Service.find({ category: "skin-care" });
+        console.log("Skin Care Services from DB:", skinCareServices);
+        res.status(200).json({ success: true, data: skinCareServices });
       } catch (error) {
         console.error("DB error:", error);
         res.status(400).json({ success: false });

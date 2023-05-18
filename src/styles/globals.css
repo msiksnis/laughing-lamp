@@ -7,3 +7,14 @@
     @apply font-poppins selection:bg-green-300;
   }
 }
+
+.item-shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

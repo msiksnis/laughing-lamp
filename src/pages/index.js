@@ -6,7 +6,7 @@ export default function HomePage({ services }) {
       <h1 className="text-xl m-10">Our Services</h1>
       {services.map((service) => (
         <div key={service._id} className="ml-10 mb-2">
-          <h2>{service.name}</h2>
+          <h2>{service.title}</h2>
         </div>
       ))}
     </main>
@@ -14,7 +14,8 @@ export default function HomePage({ services }) {
 }
 
 export async function getStaticProps() {
-  const services = await fetchServices();
+  const { data: services } = await fetchServices();
+  console.log("Services from getStaticProps:", services);
 
   return {
     props: {
