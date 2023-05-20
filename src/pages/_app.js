@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-
 import { Poppins } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

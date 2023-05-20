@@ -1,13 +1,60 @@
 import { GoPlus } from "react-icons/go";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import TreatmentItem from "@/components/dashboard/TreatmentItem";
 import { fetchSkinCare } from "../../../utils/fetchSkinCare";
 import { fetchCategories } from "../../../utils/fetchCategories";
 import CreateNewTreatmentModal from "@/components/dashboard/modals/CreateNewTreatmentModal";
+import useSWR from "swr";
 
-export default function SkinCarePage({ services, categories }) {
+export default function SkinCarePage({ initialServices, categories }) {
   const [isCreateNewTreatmentModalOpen, setIsCreateNewTreatmentModalOpen] =
     useState(false);
+
+  // Fetch the services data with useSWR
+  const {
+    data: { data: services = [] } = {},
+    mutate: mutateServices,
+    error,
+    isValidating,
+  } = useSWR("/api/get-skinCare", fetchSkinCare, {
+    initialData: initialServices,
+  });
+
+  if (error) {
+    // Handle the error...
+  }
+
+  if (isValidating) {
+    // Show a loading spinner, or some other indication that the data is being fetched...
+  }
+
+  const createNewTreatment = async (treatment) => {
+    try {
+      const res = await fetch("/api/create-service", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(treatment),
+      });
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+
+      const updatedServices = await fetchSkinCare();
+
+      // Mutate the services data
+      mutateServices(updatedServices, false);
+
+      toast.success("Treatment created successfully!");
+    } catch (error) {
+      console.error("Create treatment error:", error);
+
+      toast.error("Failed to create the treatment.");
+    }
+  };
 
   return (
     <main className="p-10">
@@ -22,6 +69,7 @@ export default function SkinCarePage({ services, categories }) {
         <CreateNewTreatmentModal
           isOpen={isCreateNewTreatmentModalOpen}
           setIsOpen={setIsCreateNewTreatmentModalOpen}
+          onSubmit={createNewTreatment}
           categories={categories}
         />
       </div>
@@ -33,12 +81,12 @@ export default function SkinCarePage({ services, categories }) {
 }
 
 export async function getStaticProps() {
-  const { data: services } = await fetchSkinCare();
+  const { data: initialServices } = await fetchSkinCare();
   const { data: categories } = await fetchCategories();
 
   return {
     props: {
-      services,
+      initialServices,
       categories,
     },
     revalidate: 10,

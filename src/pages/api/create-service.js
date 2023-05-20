@@ -15,7 +15,11 @@ export default async function handler(req, res) {
         res.status(200).json({ success: true, data: service });
       } catch (error) {
         console.error("DB error:", error);
-        res.status(400).json({ success: false });
+        if (error.name === "ValidationError") {
+          res.status(400).json({ success: false, message: error.message });
+        } else {
+          res.status(500).json({ success: false });
+        }
       }
       break;
     default:

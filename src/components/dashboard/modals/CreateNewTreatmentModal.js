@@ -15,7 +15,7 @@ export default function CreateNewTreatmentModal({
   const [duration, setDuration] = useState("");
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState("");
-  const [category, setCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -47,7 +47,7 @@ export default function CreateNewTreatmentModal({
   };
 
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+    setSelectedCategory(e.target.value);
   };
 
   const resetForm = () => {
@@ -58,13 +58,13 @@ export default function CreateNewTreatmentModal({
     setDuration("");
     setDescription("");
     setGender("");
-    setCategory("");
+    setSelectedCategory("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    onSubmit({
+    const treatment = {
       title,
       slug,
       order,
@@ -72,10 +72,12 @@ export default function CreateNewTreatmentModal({
       duration,
       description,
       gender,
-      category,
-    });
+      category: selectedCategory,
+    };
 
+    onSubmit(treatment);
     resetForm();
+    setIsOpen(false);
   };
 
   return (
@@ -170,8 +172,7 @@ export default function CreateNewTreatmentModal({
                     value={duration}
                     onChange={handleDurationChange}
                   />
-                  <input
-                    type="text"
+                  <textarea
                     placeholder="Description"
                     className="w-full p-2 border border-gray-300 rounded mb-4"
                     value={description}
@@ -210,10 +211,11 @@ export default function CreateNewTreatmentModal({
                           >
                             <input
                               type="radio"
-                              value={category.categoryName}
-                              checked={category.categoryName === category}
+                              value={category._id}
+                              checked={category._id === selectedCategory}
                               onChange={handleCategoryChange}
                             />
+
                             <span className="ml-2">
                               {category.categoryName}
                             </span>
