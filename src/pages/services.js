@@ -18,7 +18,7 @@ function Services() {
       <h1 className="text-xl m-10">Our Services</h1>
       {services.map((service) => (
         <div className="ml-10 mb-4" key={service._id}>
-          <h2>{service.name}</h2>
+          <h2>{service.title}</h2>
           <p>{service.description}</p>
           <p>Price: {service.price}</p>
         </div>

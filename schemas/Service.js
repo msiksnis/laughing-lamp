@@ -5,16 +5,17 @@ const ServiceSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     slug: { type: String, required: true },
+    order: { type: Number },
     price: { type: Number, required: true },
     duration: { type: Number, required: true },
     imageUrl: String,
     description: String,
+    gender: { type: String, enum: ["male", "female"], required: true },
     category: {
-      type: String,
-      enum: ["manicure", "pedicure", "skin-care", "hair-removal"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
-    gender: { type: String, enum: ["male", "female"], required: true },
   },
   { timestamps: true }
 );

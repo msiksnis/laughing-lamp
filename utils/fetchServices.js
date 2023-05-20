@@ -10,7 +10,5 @@ export async function fetchServices() {
 
   const data = await res.json();
 
-  console.log("Fetched services:", data);
-
   return data;
 }

@@ -1,6 +1,7 @@
 // api/get-skinCare.js
 import mongoose from "mongoose";
 import Service from "../../../schemas/Service";
+import Category from "../../../schemas/Category";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -15,9 +16,17 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const skinCareServices = await Service.find({ category: "skin-care" });
-        console.log("Skin Care Services from DB:", skinCareServices);
-        res.status(200).json({ success: true, data: skinCareServices });
+        // Get the category from the database.
+        const category = await Category.findOne({ categoryName: "skin-care" });
+
+        if (!category) {
+          throw new Error("Category not found.");
+        }
+
+        // Now use the category's ID to query the Service model.
+        const services = await Service.find({ category: category._id });
+
+        res.status(200).json({ success: true, data: services });
       } catch (error) {
         console.error("DB error:", error);
         res.status(400).json({ success: false });

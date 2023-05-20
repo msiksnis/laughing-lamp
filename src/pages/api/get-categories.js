@@ -1,5 +1,6 @@
+// api/get-categories.js
 import mongoose from "mongoose";
-import Service from "../../../schemas/Service";
+import Service from "../../../schemas/Category";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -14,8 +15,8 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const services = await Service.find({});
-        res.status(200).json({ success: true, data: services });
+        const categories = await Service.find();
+        res.status(200).json({ success: true, data: categories });
       } catch (error) {
         console.error("DB error:", error);
         res.status(400).json({ success: false });

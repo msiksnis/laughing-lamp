@@ -1,12 +1,12 @@
-import { fetchServices } from "../../utils/fetchServices";
+import { fetchCategories } from "../../utils/fetchCategories";
 
-export default function HomePage({ services }) {
+export default function HomePage({ categories }) {
   return (
     <main className="">
-      <h1 className="text-xl m-10">Our Services</h1>
-      {services.map((service) => (
-        <div key={service._id} className="ml-10 mb-2">
-          <h2>{service.title}</h2>
+      <h1 className="text-xl m-10">All Categories</h1>
+      {categories.map((category) => (
+        <div key={category._id} className="ml-10 mb-2">
+          <h2>{category.categoryName}</h2>
         </div>
       ))}
     </main>
@@ -14,12 +14,11 @@ export default function HomePage({ services }) {
 }
 
 export async function getStaticProps() {
-  const { data: services } = await fetchServices();
-  console.log("Services from getStaticProps:", services);
+  const { data: categories } = await fetchCategories();
 
   return {
     props: {
-      services,
+      categories,
     },
     revalidate: 10,
   };

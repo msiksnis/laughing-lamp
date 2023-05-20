@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const CategorySchema = new Schema({
-  name: {
+const CategorySchema = new mongoose.Schema({
+  categoryName: {
     type: String,
     required: true,
     unique: true,
@@ -9,4 +9,12 @@ const CategorySchema = new Schema({
   },
 });
 
-export default model("Category", CategorySchema);
+let Category;
+
+if (mongoose.models.Category) {
+  Category = mongoose.model("Category");
+} else {
+  Category = mongoose.model("Category", CategorySchema);
+}
+
+export default Category;
