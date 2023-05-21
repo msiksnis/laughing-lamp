@@ -1,6 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CreateNewTreatmentModal({
   isOpen,
@@ -19,11 +19,6 @@ export default function CreateNewTreatmentModal({
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-    const newSlug = e.target.value
-      .toLowerCase()
-      .replace(/[^\w ]+/g, "")
-      .replace(/ +/g, "-");
-    setSlug(newSlug);
   };
 
   const handleOrderChange = (e) => {
@@ -49,6 +44,21 @@ export default function CreateNewTreatmentModal({
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
+
+  // This useEffect will be triggered every time title or gender changes.
+  useEffect(() => {
+    // Only generate slug if both title and gender have been set
+    if (title && gender) {
+      const newSlug = title
+        .toLowerCase()
+        .replace(/[^\w ]+|[()]/g, "")
+        .replace(/ +/g, "-");
+
+      const genderSlug = `${newSlug}-${gender}`;
+
+      setSlug(genderSlug);
+    }
+  }, [title, gender]);
 
   const resetForm = () => {
     setTitle("");

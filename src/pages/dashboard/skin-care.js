@@ -6,6 +6,7 @@ import { fetchSkinCare } from "../../../utils/fetchSkinCare";
 import { fetchCategories } from "../../../utils/fetchCategories";
 import CreateNewTreatmentModal from "@/components/dashboard/modals/CreateNewTreatmentModal";
 import useSWR from "swr";
+import { Oval } from "react-loader-spinner";
 
 export default function SkinCarePage({ initialServices, categories }) {
   const [isCreateNewTreatmentModalOpen, setIsCreateNewTreatmentModalOpen] =
@@ -26,8 +27,25 @@ export default function SkinCarePage({ initialServices, categories }) {
   }
 
   if (isValidating) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <Oval
+          ariaLabel="loading-indicator"
+          height={80}
+          width={80}
+          strokeWidth={3}
+          strokeWidthSecondary={3}
+          color="#d9d9d9"
+          secondaryColor="#e6e6e6"
+        />
+      </div>
+    );
   }
+
+  const maleServices = services.filter((service) => service.gender === "male");
+  const femaleServices = services.filter(
+    (service) => service.gender === "female"
+  );
 
   const createNewTreatment = async (treatment) => {
     try {
@@ -57,19 +75,34 @@ export default function SkinCarePage({ initialServices, categories }) {
   };
 
   return (
-    <main className="p-10">
+    <main className="md:p-10 p-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl my-10 uppercase">Skin Care</h1>
+        <h1 className="md:text-3xl text-2xl my-10 uppercase">Skin Care</h1>
         <button
-          className="flex items-center uppercase border border-slate-900 rounded px-10 py-2 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
+          className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
           onClick={() => setIsCreateNewTreatmentModalOpen(true)}
         >
-          <GoPlus className="h-[18px] w-[18px] mr-2" /> Add New
+          <GoPlus className="md:h-[18px] md:w-[18px] mr-2" /> Add New
         </button>
       </div>
-      {services.map((service) => (
+      {femaleServices.length > 0 && (
+        <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
+          Female Skin Care Treatments
+        </h2>
+      )}
+      {femaleServices.map((service) => (
         <TreatmentItem key={service._id} service={service} />
       ))}
+
+      {maleServices.length > 0 && (
+        <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
+          Male Skin Care Treatments
+        </h2>
+      )}
+      {maleServices.map((service) => (
+        <TreatmentItem key={service._id} service={service} />
+      ))}
+
       <CreateNewTreatmentModal
         isOpen={isCreateNewTreatmentModalOpen}
         setIsOpen={setIsCreateNewTreatmentModalOpen}

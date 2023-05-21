@@ -34,8 +34,8 @@ export default function TreatmentItem({ service }) {
   return (
     <div className="flex justify-center items-center h-full mb-4">
       <div className="bg-white group w-full item-shadow hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
-        <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-4 pl-4 pr-1">
-          <DragDropIcon className="h-6 w-6 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
+        <div className="grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr,auto,auto] items-center gap-x-4 pl-4 pr-1">
+          <DragDropIcon className="hidden md:block h-6 w-6 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
           <div className="grid grid-rows-[auto,auto] gap-0">
             <div className="truncate">{service.title}</div>
             <p className="truncate text-sm opacity-60">{service.description}</p>

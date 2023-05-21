@@ -20,11 +20,6 @@ const ServiceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-ServiceSchema.pre("save", function (next) {
-  this.slug = slugify(this.title, { lower: true });
-  next();
-});
-
 let Service;
 
 if (mongoose.models.Service) {
