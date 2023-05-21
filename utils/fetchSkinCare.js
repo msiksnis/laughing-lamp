@@ -11,8 +11,6 @@ export async function fetchSkinCare() {
 
     const data = await res.json();
 
-    console.log("fetchSkinCare data:", data);
-
     return data;
   } catch (error) {
     console.error("Fetch services error:", error);

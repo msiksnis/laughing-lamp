@@ -24,7 +24,9 @@ export default async function handler(req, res) {
         }
 
         // Now use the category's ID to query the Service model.
-        const services = await Service.find({ category: category._id });
+        const services = await Service.find({ category: category._id }).sort({
+          order: 1,
+        });
 
         res.status(200).json({ success: true, data: services });
       } catch (error) {

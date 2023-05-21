@@ -22,11 +22,11 @@ export default function SkinCarePage({ initialServices, categories }) {
   });
 
   if (error) {
-    // Handle the error...
+    return <div>Error loading treatments</div>;
   }
 
   if (isValidating) {
-    // Show a loading spinner, or some other indication that the data is being fetched...
+    return <div>Loading...</div>;
   }
 
   const createNewTreatment = async (treatment) => {
@@ -66,16 +66,16 @@ export default function SkinCarePage({ initialServices, categories }) {
         >
           <GoPlus className="h-[18px] w-[18px] mr-2" /> Add New
         </button>
-        <CreateNewTreatmentModal
-          isOpen={isCreateNewTreatmentModalOpen}
-          setIsOpen={setIsCreateNewTreatmentModalOpen}
-          onSubmit={createNewTreatment}
-          categories={categories}
-        />
       </div>
       {services.map((service) => (
         <TreatmentItem key={service._id} service={service} />
       ))}
+      <CreateNewTreatmentModal
+        isOpen={isCreateNewTreatmentModalOpen}
+        setIsOpen={setIsCreateNewTreatmentModalOpen}
+        onSubmit={createNewTreatment}
+        categories={categories}
+      />
     </main>
   );
 }
