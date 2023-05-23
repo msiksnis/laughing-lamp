@@ -2,20 +2,43 @@ import { Dialog } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export default function CreateNewTreatmentModal({
+export default function TreatmentModal({
   isOpen,
   setIsOpen,
   onSubmit,
   categories,
+  mode, // create or edit
+  initialTreatment,
 }) {
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [order, setOrder] = useState("");
-  const [price, setPrice] = useState("");
-  const [duration, setDuration] = useState("");
-  const [description, setDescription] = useState("");
-  const [gender, setGender] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [title, setTitle] = useState(
+    mode === "edit" ? initialTreatment.title : ""
+  );
+  const [slug, setSlug] = useState(
+    mode === "edit" ? initialTreatment.slug : ""
+  );
+  const [order, setOrder] = useState(
+    mode === "edit" ? initialTreatment.order : ""
+  );
+  const [price, setPrice] = useState(
+    mode === "edit" ? initialTreatment.price : ""
+  );
+  const [duration, setDuration] = useState(
+    mode === "edit" ? initialTreatment.duration : ""
+  );
+  const [description, setDescription] = useState(
+    mode === "edit" ? initialTreatment.description : ""
+  );
+  const [gender, setGender] = useState(
+    mode === "edit" ? initialTreatment.gender : ""
+  );
+  const [selectedCategory, setSelectedCategory] = useState(
+    mode === "edit" ? initialTreatment.category : ""
+  );
+  const [titleError, setTitleError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
+  const [genderError, setGenderError] = useState(false);
+  const [categoryError, setCategoryError] = useState(false);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -60,6 +83,41 @@ export default function CreateNewTreatmentModal({
     }
   }, [title, gender]);
 
+  useEffect(() => {
+    // If title has a value, remove error state
+    if (title) {
+      setTitleError(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    // If price has a value, remove error state
+    if (price) {
+      setPriceError(false);
+    }
+  }, [price]);
+
+  useEffect(() => {
+    // If duration has a value, remove error state
+    if (duration) {
+      setDurationError(false);
+    }
+  }, [duration]);
+
+  useEffect(() => {
+    // If gender has a value, remove error state
+    if (gender) {
+      setGenderError(false);
+    }
+  }, [gender]);
+
+  useEffect(() => {
+    // If selectedCategory has a value, remove error state
+    if (selectedCategory) {
+      setCategoryError(false);
+    }
+  }, [selectedCategory]);
+
   const resetForm = () => {
     setTitle("");
     setSlug("");
@@ -74,20 +132,55 @@ export default function CreateNewTreatmentModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const treatment = {
-      title,
-      slug,
-      order,
-      price,
-      duration,
-      description,
-      gender,
-      category: selectedCategory,
-    };
+    // Set form valid status
+    let formIsValid = true;
 
-    onSubmit(treatment);
-    resetForm();
-    setIsOpen(false);
+    if (!title) {
+      setTitleError(true);
+      formIsValid = false; // set form invalid
+    }
+
+    if (!price) {
+      setPriceError(true);
+      formIsValid = false; // set form invalid
+    }
+
+    if (!duration) {
+      setDurationError(true);
+      formIsValid = false; // set form invalid
+    }
+
+    if (!gender) {
+      setGenderError(true);
+      formIsValid = false; // set form invalid
+    }
+
+    if (!selectedCategory) {
+      setCategoryError(true);
+      formIsValid = false; // set form invalid
+    }
+
+    // Only proceed if form is valid
+    if (formIsValid) {
+      const treatment = {
+        title,
+        slug,
+        order,
+        price,
+        duration,
+        description,
+        gender,
+        category: selectedCategory,
+      };
+
+      if (mode === "create") {
+        onSubmit(treatment);
+      } else {
+        onSubmit(initialTreatment._id, treatment); // Pass the ID of the treatment to be edited
+      }
+      resetForm();
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -147,7 +240,7 @@ export default function CreateNewTreatmentModal({
                 className="text-lg leading-6 font-medium text-gray-900 pt-4 text-center uppercase"
                 id="modal-headline"
               >
-                Add a new treatment
+                {mode === "create" ? "Add a new treatment" : "Edit treatment"}
               </Dialog.Title>
 
               <form onSubmit={handleSubmit}>
@@ -155,7 +248,9 @@ export default function CreateNewTreatmentModal({
                   <input
                     type="text"
                     placeholder="Title"
-                    className="w-full p-2 border border-gray-300 rounded mb-4"
+                    className={`w-full p-2 border border-gray-300 rounded mb-4 ${
+                      titleError ? "border border-red-500" : ""
+                    }`}
                     value={title}
                     onChange={handleTitleChange}
                   />
@@ -164,13 +259,15 @@ export default function CreateNewTreatmentModal({
                       type="number"
                       placeholder="Order"
                       className="w-full p-2 border border-gray-300 rounded mb-4"
-                      value={order}
+                      value={order !== null && order !== undefined ? order : ""}
                       onChange={handleOrderChange}
                     />
                     <input
                       type="number"
                       placeholder="Price"
-                      className="w-full p-2 border border-gray-300 rounded mb-4"
+                      className={`w-full p-2 border border-gray-300 rounded mb-4 ${
+                        priceError ? "border border-red-500" : ""
+                      }`}
                       value={price}
                       onChange={handlePriceChange}
                     />
@@ -178,17 +275,23 @@ export default function CreateNewTreatmentModal({
                   <input
                     type="number"
                     placeholder="Duration"
-                    className="w-full p-2 border border-gray-300 rounded mb-4"
+                    className={`w-full p-2 border border-gray-300 rounded mb-4 ${
+                      durationError ? "border border-red-500" : ""
+                    }`}
                     value={duration}
                     onChange={handleDurationChange}
                   />
                   <textarea
                     placeholder="Description"
                     className="w-full p-2 border border-gray-300 rounded mb-4"
-                    value={description}
+                    value={description || ""}
                     onChange={handleDescriptionChange}
                   />
-                  <div className="border p-4 rounded mb-4">
+                  <div
+                    className={`border p-4 rounded mb-4 ${
+                      genderError ? "border border-red-500" : ""
+                    }`}
+                  >
                     <div className="flex flex-row justify-between">
                       <label className="inline-flex items-center cursor-pointer">
                         <input
@@ -210,7 +313,11 @@ export default function CreateNewTreatmentModal({
                       </label>
                     </div>
                   </div>
-                  <div className="border p-4 rounded">
+                  <div
+                    className={`border p-4 rounded ${
+                      categoryError ? "border border-red-500" : ""
+                    }`}
+                  >
                     <p className="mb-2">Category</p>
                     <div className="flex flex-col">
                       {categories &&
@@ -246,7 +353,7 @@ export default function CreateNewTreatmentModal({
                     type="submit"
                     className="py-2 w-1/2 bg-slate-900 text-white border border-slate-900 rounded hover:bg-white hover:text-slate-900 transition-all duration-300 focus:outline-none"
                   >
-                    Add
+                    {mode === "create" ? "Add" : "Save"}
                   </button>
                 </div>
               </form>

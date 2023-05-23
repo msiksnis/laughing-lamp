@@ -5,16 +5,18 @@ import WarningModal from "./modals/WarningModal";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
+import TreatmentModal from "./modals/TreatmentModal";
 
-export default function TreatmentItem({ service }) {
+export default function TreatmentItem({ service, categories }) {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [treatmentToDelete, setTreatmentToDelete] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const { mutate } = useSWR("/api/get-skinCare");
 
   const onDelete = async (treatment) => {
     try {
-      const res = await fetch(`/api/delete-item/${treatment._id}`, {
+      const res = await fetch(`/api/delete-treatment/${treatment._id}`, {
         method: "DELETE",
       });
 
@@ -31,6 +33,29 @@ export default function TreatmentItem({ service }) {
     }
   };
 
+  const updateTreatment = async (updatedTreatment, updatedValues) => {
+    try {
+      const res = await fetch(`/api/edit-treatment/${updatedTreatment}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedValues),
+      });
+
+      if (res.ok) {
+        // Refetch the data after update
+        mutate();
+        toast.success("Treatment updated successfully!");
+      } else {
+        toast.error("Error updating treatment!");
+      }
+    } catch (error) {
+      console.error("Update treatment error:", error);
+      toast.error("Error updating treatment!");
+    }
+  };
+
   return (
     <div className="flex justify-center items-center h-full mb-4">
       <div className="bg-white group w-full item-shadow hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
@@ -44,6 +69,7 @@ export default function TreatmentItem({ service }) {
           <div className="grid grid-rows-2 border-l border-gray-400 ">
             <Edit
               data-drag-disabled
+              onClick={() => setIsEditModalOpen(true)}
               className="h-9 w-9 p-1.5 ml-1 scale-[0.9] hover:scale-[1.2] transition-all duration-300 hover:text-yellow-500 cursor-pointer"
             />
             <Delete
@@ -64,6 +90,14 @@ export default function TreatmentItem({ service }) {
           onDelete(treatmentToDelete);
           setIsWarningModalOpen(false);
         }}
+      />
+      <TreatmentModal
+        isOpen={isEditModalOpen}
+        setIsOpen={setIsEditModalOpen}
+        onSubmit={updateTreatment}
+        categories={categories}
+        mode="edit"
+        initialTreatment={service}
       />
     </div>
   );

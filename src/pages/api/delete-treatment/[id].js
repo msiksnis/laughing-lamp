@@ -1,6 +1,5 @@
-// api/delete-item/[id].js
+// pages/api/delete-item/[id].js
 import connectToDatabase from "../../../../lib/mongodb";
-// import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {

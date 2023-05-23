@@ -1,6 +1,6 @@
-// pages/api/create-service.js
-import connectToDatabase from "../../../lib/mongodb";
-import Service from "../../../schemas/Service";
+// pages/api/edit-treatment/[id].js
+import connectToDatabase from "../../../../lib/mongodb";
+import Service from "../../../../schemas/Service";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -8,10 +8,20 @@ export default async function handler(req, res) {
   await connectToDatabase();
 
   switch (method) {
-    case "POST":
+    case "PUT":
       try {
-        const service = new Service(req.body);
-        await service.save();
+        const id = req.query.id;
+        const service = await Service.findByIdAndUpdate(id, req.body, {
+          new: true,
+          runValidators: true,
+        });
+
+        if (!service) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Service not found." });
+        }
+
         res.status(200).json({ success: true, data: service });
       } catch (error) {
         console.error("DB error:", error);
@@ -22,8 +32,9 @@ export default async function handler(req, res) {
         }
       }
       break;
+
     default:
-      res.setHeader("Allow", ["POST"]);
+      res.setHeader("Allow", ["PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
       break;
   }
