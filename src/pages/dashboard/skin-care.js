@@ -78,7 +78,7 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
 
   return (
     <main
-      className={`md:px-10 px-4 transition-all duration-300 ${
+      className={`md:px-10 px-4 pl-20 transition-all duration-300 ${
         isExpanded ? "ml-[16.5rem]" : "ml-20"
       }`}
     >
