@@ -1,17 +1,18 @@
 import { TbDragDrop2 as DragDropIcon } from "react-icons/tb";
 import { HiOutlineTrash as Delete } from "react-icons/hi";
 import { FiEdit as Edit } from "react-icons/fi";
-import WarningModal from "./modals/WarningModal";
+import WarningModal from "./Modals/WarningModal";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
-import TreatmentModal from "./modals/TreatmentModal";
+import TreatmentModal from "./Modals/TreatmentModal";
 import { Reorder } from "framer-motion";
 import { useMotionValue } from "framer-motion";
 import { useRaisedShadow } from "../../../hooks/useRaisedShadow";
 import { motion } from "framer-motion";
+import { endpointForCategory } from "./textConversion";
 
-export default function TreatmentItem({ service, categories }) {
+export default function TreatmentItem({ service, category, categories }) {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [treatmentToDelete, setTreatmentToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function TreatmentItem({ service, categories }) {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
 
-  const { mutate } = useSWR("/api/get-skinCare");
+  const { mutate } = useSWR(`/api/get-${endpointForCategory(category)}`);
 
   const onDelete = async (treatment) => {
     try {

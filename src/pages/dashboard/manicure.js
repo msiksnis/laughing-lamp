@@ -2,7 +2,7 @@
 import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { fetchSkinCare } from "../../../utils/fetchSkinCare";
+import { fetchManicure } from "../../../utils/fetchManicure";
 import { fetchCategories } from "../../../utils/fetchCategories";
 import TreatmentModal from "@/components/dashboard/Modals/TreatmentModal";
 import useSWR from "swr";
@@ -11,7 +11,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 
-export default function SkinCarePage({ initialSkinCareServices, categories }) {
+export default function ManicurePage({ initialManicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
 
@@ -21,8 +21,8 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
     mutate: mutateServices,
     error,
     isValidating,
-  } = useSWR("/api/get-skinCare", fetchSkinCare, {
-    initialData: initialSkinCareServices,
+  } = useSWR("/api/get-manicure", fetchManicure, {
+    initialData: initialManicureServices,
   });
 
   if (error) {
@@ -82,7 +82,7 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
       }`}
     >
       <div className="flex justify-between mt-8 items-center">
-        <div className="md:text-4xl text-2xl uppercase">Skin Care</div>
+        <div className="md:text-4xl text-2xl uppercase">Manicure</div>
         <button
           className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
           onClick={() => setIsTreatmentModalOpen(true)}
@@ -93,11 +93,11 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
       {femaleServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Female Skin Care Treatments
+            Female Manicure Treatments
           </h2>
           <TreatmentList
             services={femaleServices}
-            category="skin-care"
+            category="manicure"
             categories={categories}
           />
         </>
@@ -105,11 +105,11 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
       {maleServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Male Skin Care Treatments
+            Male Manicure Treatments
           </h2>
           <TreatmentList
             services={maleServices}
-            category="skin-care"
+            category="manicure"
             categories={categories}
           />
         </>
@@ -131,15 +131,15 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
   );
 }
 
-SkinCarePage.layout = DashboardLayout;
+ManicurePage.layout = DashboardLayout;
 
 export async function getStaticProps() {
-  const { data: initialSkinCareServices } = await fetchSkinCare();
+  const { data: initialManicureServices } = await fetchManicure();
   const { data: categories } = await fetchCategories();
 
   return {
     props: {
-      initialSkinCareServices,
+      initialManicureServices,
       categories,
     },
     revalidate: 10,
