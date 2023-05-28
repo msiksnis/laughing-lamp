@@ -71,7 +71,6 @@ export default function TreatmentItem({ service, category, categories }) {
         whileTap={{
           cursor: "grabbing",
           scale: 1.01,
-          y: -5,
           transition: { duration: 0.2 },
         }}
       >

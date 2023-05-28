@@ -23,6 +23,7 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
     isValidating,
   } = useSWR("/api/get-skinCare", fetchSkinCare, {
     initialData: initialSkinCareServices,
+    revalidateOnFocus: false,
   });
 
   if (error) {

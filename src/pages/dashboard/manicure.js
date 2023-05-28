@@ -23,6 +23,7 @@ export default function ManicurePage({ initialManicureServices, categories }) {
     isValidating,
   } = useSWR("/api/get-manicure", fetchManicure, {
     initialData: initialManicureServices,
+    revalidateOnFocus: false,
   });
 
   if (error) {
