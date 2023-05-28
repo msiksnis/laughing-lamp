@@ -9,11 +9,15 @@ const poppins = Poppins({
   variable: "--main-font",
 });
 
-export default function App({ Component, pageProps, session }) {
+export default function App({ Component, pageProps }) {
+  const Layout = Component.layout || (({ children }) => <>{children}</>);
+
   return (
     <main className={`${poppins.variable} font-poppins`}>
-      <Component {...pageProps} />
-      <ToastContainer />
+      <Layout>
+        <Component {...pageProps} />
+        <ToastContainer />
+      </Layout>
     </main>
   );
 }

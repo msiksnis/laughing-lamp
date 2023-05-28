@@ -1,24 +1,29 @@
-import { fetchCategories } from "../../utils/fetchCategories";
+import { useState } from "react";
+import TreatmentItem from "@/components/dashboard/TreatmentItem";
+import { fetchServices } from "../../utils/fetchServices";
+import { Reorder } from "framer-motion";
 
-export default function HomePage({ categories }) {
+export default function HomePage({ services: initialServices }) {
+  const [services, setServices] = useState(initialServices);
+
   return (
-    <main className="">
-      <h1 className="text-xl m-10">All Categories</h1>
-      {categories.map((category) => (
-        <div key={category._id} className="ml-10 mb-2">
-          <h2>{category.categoryName}</h2>
-        </div>
-      ))}
+    <main className="m-10">
+      <h1 className="text-xl mb-10">All Services</h1>
+      <Reorder.Group axis="y" onReorder={setServices} values={services}>
+        {services.map((service) => (
+          <TreatmentItem key={service._id} service={service} />
+        ))}
+      </Reorder.Group>
     </main>
   );
 }
 
 export async function getStaticProps() {
-  const { data: categories } = await fetchCategories();
+  const { data: services } = await fetchServices();
 
   return {
     props: {
-      categories,
+      services,
     },
     revalidate: 10,
   };

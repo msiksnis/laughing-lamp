@@ -7,6 +7,8 @@ import { fetchCategories } from "../../../utils/fetchCategories";
 import TreatmentModal from "@/components/dashboard/modals/TreatmentModal";
 import useSWR from "swr";
 import { Oval } from "react-loader-spinner";
+import DashboardHeader from "@/components/dashboard/header/DashboardHeader";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 export default function SkinCarePage({ initialServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
@@ -74,7 +76,7 @@ export default function SkinCarePage({ initialServices, categories }) {
   };
 
   return (
-    <main className="md:p-10 p-4">
+    <main className="md:px-10 p-4">
       <div className="flex justify-between items-center">
         <h1 className="md:text-3xl text-2xl my-10 uppercase">Skin Care</h1>
         <button
@@ -110,6 +112,12 @@ export default function SkinCarePage({ initialServices, categories }) {
         />
       ))}
 
+      <div className="flex justify-center my-10 items-center">
+        <button className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none">
+          Save Order Changes
+        </button>
+      </div>
+
       <TreatmentModal
         isOpen={isTreatmentModalOpen}
         setIsOpen={setIsTreatmentModalOpen}
@@ -121,6 +129,8 @@ export default function SkinCarePage({ initialServices, categories }) {
     </main>
   );
 }
+
+SkinCarePage.layout = DashboardLayout;
 
 export async function getStaticProps() {
   const { data: initialServices } = await fetchSkinCare();
@@ -134,7 +144,3 @@ export async function getStaticProps() {
     revalidate: 10,
   };
 }
-
-// From the code you've provided, it seems like the issue might be related to the data being sent to the server when updating the treatment. You are calling updateTreatment function with updatedTreatment argument, however, this function is calling fetch with service._id and sending updatedTreatment as a body to /api/edit-treatment/${service._id}. It's possible that updatedTreatment does not contain the updated values you want, and hence the server is not able to apply these updates.
-
-// The issue appears to be with the updatedTreatment you are sending in the request body to your server. Your server is expecting to receive an object containing the fields that you want to update, but you are only sending an ID. Therefore, the findByIdAndUpdate function has no new data to update the document with.
