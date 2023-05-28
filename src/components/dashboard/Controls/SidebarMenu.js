@@ -85,7 +85,7 @@ export default function SidebarMenu() {
         {menuItems.map(({ text, icon, route }) => (
           <div
             key={text}
-            onClick={() => onMenuItemClick(route)}
+            onClick={() => onMenuItemClick(text, route)}
             className={`flex items-center cursor-pointer hover:bg-slate-100 rounded transition-all duration-300 ${
               router.asPath === route ? "bg-slate-100 rounded" : ""
             }`}

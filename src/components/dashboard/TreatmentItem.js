@@ -67,12 +67,17 @@ export default function TreatmentItem({ service, category, categories }) {
   return (
     <Reorder.Item value={service} id={service._id} style={{ boxShadow, y }}>
       <motion.div
-        className="flex justify-center items-center h-full mb-4"
-        whileTap={{ cursor: "grabbing" }}
+        className="flex justify-center items-center h-full mb-4 cursor-pointer"
+        whileTap={{
+          cursor: "grabbing",
+          scale: 1.01,
+          y: -5,
+          transition: { duration: 0.2 },
+        }}
       >
         <div className="bg-white group w-full item-shadow hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
           <div className="grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr,auto,auto] items-center gap-x-4 pl-4 pr-1">
-            <DragDropIcon className="hidden md:block h-6 w-6 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
+            <DragDropIcon className="hidden md:block h-6 w-6 opacity-0 group-hover:opacity-80 transition-opacity duration-300 cursor-pointer" />
             <div className="grid grid-rows-[auto,auto] gap-0">
               <div className="truncate">{service.title}</div>
               <p className="truncate text-sm opacity-60">
