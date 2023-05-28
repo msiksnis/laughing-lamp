@@ -2,40 +2,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { HiOutlineArrowLeft as Colapse } from "react-icons/hi";
-
-const menuItems = [
-  {
-    text: "Manicure",
-    icon: "/icons/manicure.svg",
-    route: "/dashboard/manicure",
-  },
-  {
-    text: "Pedicure",
-    icon: "/icons/pedicure.svg",
-    route: "/dashboard/pedicure",
-  },
-  {
-    text: "Skin Care",
-    icon: "/icons/skin-care.svg",
-    route: "/dashboard/skin-care",
-  },
-  {
-    text: "Lashes & Brows",
-    icon: "/icons/lashes-brows.svg",
-    route: "/dashboard/lashes-brows",
-  },
-  {
-    text: "Gift Cards",
-    icon: "/icons/gift-cards.svg",
-    route: "/dashboard/gift-cards",
-  },
-  {
-    text: "Packages",
-    icon: "/icons/packages.svg",
-    route: "/dashboard/packages",
-  },
-];
+import { HiOutlineArrowLeft as Collapse } from "react-icons/hi";
+import { menuItems } from "./menuItems";
 
 export default function SidebarMenu() {
   const router = useRouter();
@@ -49,7 +17,7 @@ export default function SidebarMenu() {
 
   return (
     <div
-      className={`fixed m-6 z-10 mt-[6.5rem] px-2 py-4 left-0 top-0 bottom-0 bg-white rounded-md text-slate-900 item-shadow transition-width duration-300 overflow-hidden ${
+      className={`fixed m-6 z-10 mt-[6.5rem] px-2 py-4 left-0 top-0 bottom-0 bg-white rounded-md text-slate-900 item-shadow transition-width duration-300 h-[calc(100vh-8rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar ${
         isExpanded ? "w-64" : "w-[4.5rem]"
       }`}
     >
@@ -74,7 +42,7 @@ export default function SidebarMenu() {
               onClick={toggleSidebar}
               className="opacity-0 flex justify-center w-full h-9 cursor-pointer transition-opacity duration-300"
             />
-            <Colapse
+            <Collapse
               onClick={toggleSidebar}
               className="h-8 w-8 cursor-pointer"
             />

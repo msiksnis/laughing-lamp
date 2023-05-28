@@ -1,8 +1,8 @@
-// /pages/dashboard/manicure.js
+// /pages/dashboard/pedicure.js
 import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { fetchManicure } from "../../../utils/fetchManicure";
+import { fetchPedicure } from "../../../utils/fetchPedicure";
 import { fetchCategories } from "../../../utils/fetchCategories";
 import TreatmentModal from "@/components/dashboard/Modals/TreatmentModal";
 import useSWR from "swr";
@@ -11,7 +11,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 
-export default function ManicurePage({ initialManicureServices, categories }) {
+export default function PedicurePage({ initialPedicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
 
@@ -21,8 +21,8 @@ export default function ManicurePage({ initialManicureServices, categories }) {
     mutate: mutateServices,
     error,
     isValidating,
-  } = useSWR("/api/get-manicure", fetchManicure, {
-    initialData: initialManicureServices,
+  } = useSWR("/api/get-pedicure", fetchPedicure, {
+    initialData: initialPedicureServices,
     revalidateOnFocus: false,
   });
 
@@ -83,7 +83,7 @@ export default function ManicurePage({ initialManicureServices, categories }) {
       }`}
     >
       <div className="flex justify-between mt-8 items-center">
-        <div className="md:text-4xl text-2xl uppercase">Manicure</div>
+        <div className="md:text-4xl text-2xl uppercase">Pedicure</div>
         <button
           className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
           onClick={() => setIsTreatmentModalOpen(true)}
@@ -94,11 +94,11 @@ export default function ManicurePage({ initialManicureServices, categories }) {
       {femaleServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Female Manicure Treatments
+            Female Pedicure Treatments
           </h2>
           <TreatmentList
             services={femaleServices}
-            category="manicure"
+            category="pedicure"
             categories={categories}
           />
         </>
@@ -106,11 +106,11 @@ export default function ManicurePage({ initialManicureServices, categories }) {
       {maleServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Male Manicure Treatments
+            Male Pedicure Treatments
           </h2>
           <TreatmentList
             services={maleServices}
-            category="manicure"
+            category="pedicure"
             categories={categories}
           />
         </>
@@ -132,15 +132,15 @@ export default function ManicurePage({ initialManicureServices, categories }) {
   );
 }
 
-ManicurePage.layout = DashboardLayout;
+PedicurePage.layout = DashboardLayout;
 
 export async function getStaticProps() {
-  const { data: initialManicureServices } = await fetchManicure();
+  const { data: initialPedicureServices } = await fetchPedicure();
   const { data: categories } = await fetchCategories();
 
   return {
     props: {
-      initialManicureServices,
+      initialPedicureServices,
       categories,
     },
     revalidate: 10,

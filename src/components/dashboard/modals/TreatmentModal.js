@@ -1,6 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { convertCategoryTitle } from "../textConversion";
 
 export default function TreatmentModal({
   isOpen,
@@ -44,10 +45,6 @@ export default function TreatmentModal({
     setTitle(e.target.value);
   };
 
-  const handleOrderChange = (e) => {
-    setOrder(e.target.value);
-  };
-
   const handlePriceChange = (e) => {
     setPrice(e.target.value);
   };
@@ -68,7 +65,6 @@ export default function TreatmentModal({
     setSelectedCategory(e.target.value);
   };
 
-  // This useEffect will be triggered every time title or gender changes.
   useEffect(() => {
     // Only generate slug if both title and gender have been set
     if (title && gender) {
@@ -190,7 +186,7 @@ export default function TreatmentModal({
           open={isOpen}
           onClose={setIsOpen}
           as="div"
-          className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+          className="fixed inset-0 pb-40 sm:pb-0 z-10 flex items-center justify-center overflow-y-auto"
         >
           <Dialog.Overlay />
           <div className="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -244,61 +240,88 @@ export default function TreatmentModal({
               </Dialog.Title>
 
               <form onSubmit={handleSubmit}>
-                <div className="modal-content p-4">
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    className={`w-full p-2 border border-gray-300 rounded mb-4 ${
-                      titleError ? "border border-red-500" : ""
-                    }`}
-                    value={title}
-                    onChange={handleTitleChange}
-                  />
-                  <div className="flex space-x-2">
+                <div className="modal-content p-4 pt-6">
+                  <div className="relative">
                     <input
-                      type="number"
-                      placeholder="Order"
-                      className="w-full p-2 border border-gray-300 rounded mb-4"
-                      value={order !== null && order !== undefined ? order : ""}
-                      onChange={handleOrderChange}
-                    />
-                    <input
-                      type="number"
-                      placeholder="Price"
-                      className={`w-full p-2 border border-gray-300 rounded mb-4 ${
-                        priceError ? "border border-red-500" : ""
+                      type="text"
+                      placeholder="Title"
+                      className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                        titleError ? "border border-red-500" : ""
                       }`}
-                      value={price}
-                      onChange={handlePriceChange}
+                      value={title}
+                      onChange={handleTitleChange}
                     />
+                    <label
+                      htmlFor="title"
+                      className="absolute left-1.5 -top-3 text-sm bg-white px-1 text-gray-400 transition-all peer-placeholder-shown:text-gray-400 focus:text-gray-400 peer-placeholder-shown:top-2 peer-focus:text-base peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-slate-700"
+                    >
+                      Title
+                    </label>
                   </div>
-                  <input
-                    type="number"
-                    placeholder="Duration"
-                    className={`w-full p-2 border border-gray-300 rounded mb-4 ${
-                      durationError ? "border border-red-500" : ""
-                    }`}
-                    value={duration}
-                    onChange={handleDurationChange}
-                  />
-                  <textarea
-                    placeholder="Description"
-                    className="w-full p-2 border border-gray-300 rounded mb-4"
-                    value={description || ""}
-                    onChange={handleDescriptionChange}
-                  />
+                  <div className="flex space-x-2">
+                    <div className="relative">
+                      <input
+                        type="number"
+                        placeholder="Price"
+                        className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                          priceError ? "border border-red-500" : ""
+                        }`}
+                        value={price}
+                        onChange={handlePriceChange}
+                      />
+                      <label
+                        htmlFor="price"
+                        className="absolute left-1.5 -top-3 text-sm bg-white px-1 text-gray-400 transition-all peer-placeholder-shown:text-gray-400 focus:text-gray-400 peer-placeholder-shown:top-2 peer-focus:text-base peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-slate-700"
+                      >
+                        Price
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        placeholder="Duration"
+                        className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                          durationError ? "border border-red-500" : ""
+                        }`}
+                        value={duration}
+                        onChange={handleDurationChange}
+                      />
+                      <label
+                        htmlFor="duration"
+                        className="absolute left-1.5 -top-3 text-sm bg-white px-1 text-gray-400 transition-all peer-placeholder-shown:text-gray-400 focus:text-gray-400 peer-placeholder-shown:top-2 peer-focus:text-base peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-slate-700"
+                      >
+                        Duration
+                      </label>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <textarea
+                      placeholder="Description"
+                      className="w-full p-2 border border-gray-300 rounded mb-5 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900"
+                      value={description || ""}
+                      onChange={handleDescriptionChange}
+                    />
+                    <label
+                      htmlFor="description"
+                      className="absolute left-1.5 -top-3 text-sm bg-white px-1 text-gray-400 transition-all peer-placeholder-shown:text-gray-400 focus:text-gray-400 peer-placeholder-shown:top-2 peer-focus:text-base peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-slate-700"
+                    >
+                      Description
+                    </label>
+                  </div>
                   <div
-                    className={`border p-4 rounded mb-4 ${
+                    className={`border p-4 rounded mb-6 ${
                       genderError ? "border border-red-500" : ""
                     }`}
                   >
-                    <div className="flex flex-row justify-between">
+                    <p className="mb-2 text-gray-800">Select gender</p>
+                    <div className="flex space-x-5">
                       <label className="inline-flex items-center cursor-pointer">
                         <input
                           type="radio"
                           value="female"
                           checked={gender === "female"}
                           onChange={handleGenderChange}
+                          className="cursor-pointer accent-slate-900"
                         />
                         <span className="ml-2">Female</span>
                       </label>
@@ -308,6 +331,7 @@ export default function TreatmentModal({
                           value="male"
                           checked={gender === "male"}
                           onChange={handleGenderChange}
+                          className="cursor-pointer accent-slate-900"
                         />
                         <span className="ml-2">Male</span>
                       </label>
@@ -318,7 +342,7 @@ export default function TreatmentModal({
                       categoryError ? "border border-red-500" : ""
                     }`}
                   >
-                    <p className="mb-2">Category</p>
+                    <p className="mb-2 text-gray-800">Select category</p>
                     <div className="flex flex-col">
                       {categories &&
                         categories.map((category) => (
@@ -331,10 +355,11 @@ export default function TreatmentModal({
                               value={category._id}
                               checked={category._id === selectedCategory}
                               onChange={handleCategoryChange}
+                              className="cursor-pointer accent-slate-900"
                             />
 
                             <span className="ml-2">
-                              {category.categoryName}
+                              {convertCategoryTitle(category.categoryName)}
                             </span>
                           </label>
                         ))}
