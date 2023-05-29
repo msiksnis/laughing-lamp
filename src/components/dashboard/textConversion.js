@@ -15,3 +15,7 @@ export function convertCategoryTitle(str) {
       (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     );
 }
+
+export function convertToCorrectCategory(str) {
+  return str.toLowerCase().replace(/\s+/g, "-");
+}

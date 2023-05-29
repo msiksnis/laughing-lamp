@@ -17,7 +17,7 @@ export default function SidebarMenu() {
 
   return (
     <div
-      className={`fixed m-6 z-10 mt-[6.5rem] px-2 py-4 left-0 top-0 bottom-0 bg-white rounded-md text-slate-900 item-shadow transition-width duration-300 h-[calc(100vh-8rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar ${
+      className={`hidden md:block fixed m-6 z-10 mt-[6.5rem] px-2 py-4 left-0 top-0 bottom-0 bg-white rounded-md text-slate-900 item-shadow transition-width duration-300 h-[calc(100vh-8rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar ${
         isExpanded ? "w-64" : "w-[4.5rem]"
       }`}
     >

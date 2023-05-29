@@ -1,8 +1,7 @@
-// /pages/dashboard/manicure.js
+// /pages/dashboard/pedicure.js
 import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { fetchManicure } from "../../../utils/fetchManicure";
 import { fetchCategories } from "../../../utils/fetchCategories";
 import TreatmentModal from "@/components/dashboard/Modals/TreatmentModal";
 import useSWR from "swr";
@@ -10,27 +9,44 @@ import { Oval } from "react-loader-spinner";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import { fetchLashes } from "../../../utils/fetchLashes";
+import { fetchBrows } from "../../../utils/fetchBrows";
 
-export default function ManicurePage({ initialManicureServices, categories }) {
+export default function LashesAndBrowsPage({
+  initialLashesServices,
+  initialBrowsServices,
+  categories,
+}) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
 
-  // Fetch the services data with useSWR
+  // Fetch the Lashes services data with useSWR
   const {
-    data: { data: services = [] } = {},
-    mutate: mutateServices,
-    error,
-    isValidating,
-  } = useSWR("/api/get-manicure", fetchManicure, {
-    initialData: initialManicureServices,
+    data: { data: lashesServices = [] } = {},
+    mutate: mutateLashesServices,
+    error: lashesError,
+    isValidating: lashesValidating,
+  } = useSWR("/api/get-lashes", fetchLashes, {
+    initialData: initialLashesServices,
     revalidateOnFocus: false,
   });
 
-  if (error) {
+  // Fetch the Brows services data with useSWR
+  const {
+    data: { data: browsServices = [] } = {},
+    mutate: mutateBrowsServices,
+    error: browsError,
+    isValidating: browsValidating,
+  } = useSWR("/api/get-brows", fetchBrows, {
+    initialData: initialBrowsServices,
+    revalidateOnFocus: false,
+  });
+
+  if (lashesError || browsError) {
     return <div>Error loading treatments</div>;
   }
 
-  if (isValidating) {
+  if (lashesValidating || browsValidating) {
     return (
       <div className="flex justify-center items-center h-screen w-full">
         <Oval
@@ -45,11 +61,6 @@ export default function ManicurePage({ initialManicureServices, categories }) {
       </div>
     );
   }
-
-  const maleServices = services.filter((service) => service.gender === "male");
-  const femaleServices = services.filter(
-    (service) => service.gender === "female"
-  );
 
   const createNewTreatment = async (treatment) => {
     try {
@@ -66,7 +77,8 @@ export default function ManicurePage({ initialManicureServices, categories }) {
       }
 
       // Mutate the services data
-      mutateServices();
+      mutateLashesServices();
+      mutateBrowsServices();
 
       toast.success("Treatment created successfully!");
     } catch (error) {
@@ -79,11 +91,11 @@ export default function ManicurePage({ initialManicureServices, categories }) {
   return (
     <main
       className={`md:px-10 px-4 pb-20 transition-all duration-300 ${
-        isExpanded ? "ml-[16.5rem]" : "md:ml-20"
+        isExpanded ? "ml-[16.5rem]" : "ml-20"
       }`}
     >
       <div className="flex justify-between mt-8 items-center">
-        <div className="md:text-4xl text-2xl uppercase">Manicure</div>
+        <div className="md:text-4xl text-2xl uppercase">Lashes and Brows</div>
         <button
           className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
           onClick={() => setIsTreatmentModalOpen(true)}
@@ -91,35 +103,30 @@ export default function ManicurePage({ initialManicureServices, categories }) {
           <GoPlus className="md:h-[18px] md:w-[18px] mr-2" /> Add New
         </button>
       </div>
-      {femaleServices.length > 0 && (
+      {lashesServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Female Manicure Treatments
+            Lash Treatments
           </h2>
           <TreatmentList
-            services={femaleServices}
-            category="manicure"
+            services={lashesServices}
+            category="lashes"
             categories={categories}
           />
         </>
       )}
-      {maleServices.length > 0 && (
+      {browsServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
-            Male Manicure Treatments
+            Brow Treatments
           </h2>
           <TreatmentList
-            services={maleServices}
-            category="manicure"
+            services={browsServices}
+            category="brows"
             categories={categories}
           />
         </>
       )}
-      {/* <div className="flex justify-center my-10 items-center">
-        <button className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none">
-          Save Order Changes
-        </button>
-      </div> */}
       <TreatmentModal
         isOpen={isTreatmentModalOpen}
         setIsOpen={setIsTreatmentModalOpen}
@@ -132,15 +139,17 @@ export default function ManicurePage({ initialManicureServices, categories }) {
   );
 }
 
-ManicurePage.layout = DashboardLayout;
+LashesAndBrowsPage.layout = DashboardLayout;
 
 export async function getStaticProps() {
-  const { data: initialManicureServices } = await fetchManicure();
+  const { data: initialLashesServices } = await fetchLashes();
+  const { data: initialBrowsServices } = await fetchBrows();
   const { data: categories } = await fetchCategories();
 
   return {
     props: {
-      initialManicureServices,
+      initialLashesServices,
+      initialBrowsServices,
       categories,
     },
     revalidate: 10,
