@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { HiOutlineArrowLeft as Collapse } from "react-icons/hi";
 import { menuItems } from "./menuItems";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default function SidebarMenu() {
   const router = useRouter();
@@ -49,7 +50,7 @@ export default function SidebarMenu() {
           </>
         )}
       </div>
-      <div className="flex flex-col mt-20 space-y-4 text-lg whitespace-nowrap uppercase">
+      <div className="flex flex-col space-y-3 mt-20 whitespace-nowrap uppercase">
         {menuItems.map(({ text, icon, route }) => (
           <div
             key={text}
@@ -58,15 +59,15 @@ export default function SidebarMenu() {
               router.asPath === route ? "bg-slate-100 rounded" : ""
             }`}
           >
-            <div className="relative flex items-center space-x-4 ml-1">
+            <div className="relative flex items-center space-x-4 ml-2">
               <Image
                 src={icon}
                 alt={text}
-                width={50}
-                height={50}
-                className="bg-slate-100 rounded-full p-1.5"
+                width={40}
+                height={40}
+                className="bg-slate-100 rounded-full p-[3px]"
               />
-              <div className="absolute left-12 w-48 overflow-hidden">
+              <div className="absolute left-10 w-40 overflow-hidden">
                 {text}
               </div>
             </div>

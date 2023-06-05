@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,15 +10,20 @@ const poppins = Poppins({
   variable: "--main-font",
 });
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const Layout = Component.layout || (({ children }) => <>{children}</>);
 
   return (
     <main className={`${poppins.variable} font-poppins`}>
-      <Layout>
-        <Component {...pageProps} />
-        <ToastContainer />
-      </Layout>
+      <SessionProvider session={session}>
+        <Layout>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </Layout>
+      </SessionProvider>
     </main>
   );
 }

@@ -29,9 +29,9 @@ export const menuItems = [
     icon: "/icons/packages.svg",
     route: "/dashboard/packages",
   },
-  {
-    text: "Settings",
-    icon: "/icons/settings.svg",
-    route: "/dashboard/settings",
-  },
+  // {
+  //   text: "Settings",
+  //   icon: "/icons/settings.svg",
+  //   route: "/dashboard/settings",
+  // },
 ];

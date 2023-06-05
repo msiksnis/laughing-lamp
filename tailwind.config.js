@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         poppins: ["var(--main-font)", ...fontFamily.sans],
       },
+      colors: {
+        darkBg: "#151415",
+      },
     },
   },
   plugins: [],

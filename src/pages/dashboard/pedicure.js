@@ -10,6 +10,7 @@ import { Oval } from "react-loader-spinner";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import { getSession } from "next-auth/react";
 
 export default function PedicurePage({ initialPedicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
@@ -79,10 +80,10 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
   return (
     <main
       className={`md:px-10 px-4 pb-20 transition-all duration-300 ${
-        isExpanded ? "ml-[16.5rem]" : "ml-20"
+        isExpanded ? "ml-[16.5rem]" : "md:ml-20"
       }`}
     >
-      <div className="flex justify-between mt-8 items-center">
+      <div className="flex justify-between mt-5 sm:mt-10 md:mt-8 items-center">
         <div className="md:text-4xl text-2xl uppercase">Pedicure</div>
         <button
           className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
@@ -115,11 +116,6 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
           />
         </>
       )}
-      {/* <div className="flex justify-center my-10 items-center">
-        <button className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none">
-          Save Order Changes
-        </button>
-      </div> */}
       <TreatmentModal
         isOpen={isTreatmentModalOpen}
         setIsOpen={setIsTreatmentModalOpen}
@@ -134,7 +130,18 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
 
 PedicurePage.layout = DashboardLayout;
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  }
+
   const { data: initialPedicureServices } = await fetchPedicure();
   const { data: categories } = await fetchCategories();
 
@@ -143,6 +150,5 @@ export async function getStaticProps() {
       initialPedicureServices,
       categories,
     },
-    revalidate: 10,
   };
 }

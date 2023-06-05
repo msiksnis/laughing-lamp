@@ -27,3 +27,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.gradient {
+  background: linear-gradient(to right, #f00, #0f0, #00f);
+}

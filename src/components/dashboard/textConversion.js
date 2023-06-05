@@ -8,6 +8,9 @@ export function endpointForCategory(category) {
 }
 
 export function convertCategoryTitle(str) {
+  if (!str) {
+    return "";
+  }
   return str
     .replace(/-/g, " ")
     .replace(

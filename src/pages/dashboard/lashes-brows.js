@@ -11,6 +11,7 @@ import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { fetchLashes } from "../../../utils/fetchLashes";
 import { fetchBrows } from "../../../utils/fetchBrows";
+import { getSession } from "next-auth/react";
 
 export default function LashesAndBrowsPage({
   initialLashesServices,
@@ -91,16 +92,17 @@ export default function LashesAndBrowsPage({
   return (
     <main
       className={`md:px-10 px-4 pb-20 transition-all duration-300 ${
-        isExpanded ? "ml-[16.5rem]" : "ml-20"
+        isExpanded ? "ml-[16.5rem]" : "md:ml-20"
       }`}
     >
-      <div className="flex justify-between mt-8 items-center">
+      <div className="flex justify-between mt-5 sm:mt-10 md:mt-8 items-start md:items-center">
         <div className="md:text-4xl text-2xl uppercase">Lashes and Brows</div>
         <button
-          className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
+          className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none whitespace-nowrap"
           onClick={() => setIsTreatmentModalOpen(true)}
         >
-          <GoPlus className="md:h-[18px] md:w-[18px] mr-2" /> Add New
+          <GoPlus className="md:h-[18px] md:w-[18px] mr-2" />
+          Add New
         </button>
       </div>
       {lashesServices.length > 0 && (
@@ -141,7 +143,18 @@ export default function LashesAndBrowsPage({
 
 LashesAndBrowsPage.layout = DashboardLayout;
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  }
+
   const { data: initialLashesServices } = await fetchLashes();
   const { data: initialBrowsServices } = await fetchBrows();
   const { data: categories } = await fetchCategories();
@@ -152,6 +165,5 @@ export async function getStaticProps() {
       initialBrowsServices,
       categories,
     },
-    revalidate: 10,
   };
 }
