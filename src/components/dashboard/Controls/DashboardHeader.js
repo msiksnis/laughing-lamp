@@ -28,8 +28,13 @@ export default function DashboardHeader() {
         setSearchResults(data.data);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
-      toast.error("Oops! Something went wrong.");
+      if (error.name === "TypeError" && error.message === "Failed to fetch") {
+        console.error("Fetch error due to network suspension:", error);
+        // An adittional logic to retry the request when network is available might be implemented or simply ignore the error.
+      } else {
+        console.error("Fetch error:", error);
+        toast.error("Oops! Something went wrong.");
+      }
     }
   };
 
@@ -53,7 +58,7 @@ export default function DashboardHeader() {
                 alt="user profile image"
                 width={40}
                 height={40}
-                className="rounded-full cursor-pointer border border-white/60 hover:border-white/70 transition-all duration-200"
+                className="rounded-full cursor-pointer border border-gray-600 hover:border-gray-600/50 transition-all duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               />
             )}

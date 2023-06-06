@@ -130,6 +130,19 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
 
 SkinCarePage.layout = DashboardLayout;
 
+// export async function getStaticProps() {
+//   const { data: initialSkinCareServices } = await fetchSkinCare();
+//   const { data: categories } = await fetchCategories();
+
+//   return {
+//     props: {
+//       initialSkinCareServices,
+//       categories,
+//     },
+//     revalidate: 10,
+//   };
+// }
+
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 

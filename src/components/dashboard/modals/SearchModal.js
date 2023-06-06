@@ -19,6 +19,14 @@ export default function SearchModal({
     onSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, onSearch]);
 
+  const handleSearchResultClick = (slug) => {
+    // navigate to the service detail page
+    router.push(`/dashboard/product/${slug}`);
+    // reset the search input and results
+    setSearch("");
+    setIsOpen(false);
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -84,10 +92,7 @@ export default function SearchModal({
                     <div
                       className="flex w-full border-b justify-between items-center cursor-pointer hover:bg-gray-100 px-4 py-2"
                       key={result._id}
-                      onClick={() => {
-                        // navigate to the service detail page
-                        router.push(`/dashboard/product/${result.slug}`);
-                      }}
+                      onClick={() => handleSearchResultClick(result.slug)}
                     >
                       <div className="flex justify-start w-4/5 md:w-min space-x-2 items-center">
                         <div className="truncate">{result.title}</div>

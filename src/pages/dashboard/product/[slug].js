@@ -24,7 +24,13 @@ export default function SingleProductPage() {
 
   const product = item.data;
 
-  return <div>{product.title}</div>;
+  return (
+    <>
+      <div>{product.title}</div>
+      <div>{product.price}</div>
+      <div>{product.description}</div>
+    </>
+  );
 }
 
 SingleProductPage.layout = DashboardLayout;

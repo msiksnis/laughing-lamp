@@ -1,6 +1,7 @@
 // pages/api/get-service-by-slug.js
 import mongoose from "mongoose";
 import Service from "../../../schemas/Service";
+import Category from "../../../schemas/Category";
 
 export default async function handler(req, res) {
   const { method } = req;
