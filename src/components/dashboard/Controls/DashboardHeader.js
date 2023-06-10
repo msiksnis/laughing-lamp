@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { GoSearch } from "react-icons/go";
-import SearchModal from "../Modals/SearchModal";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import MobileMenu from "./MobileMenu";
+import SearchModal from "../Modals/SearchModal";
 
 export default function DashboardHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
