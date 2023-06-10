@@ -10,11 +10,27 @@ import { Oval } from "react-loader-spinner";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function ManicurePage({ initialManicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
+  const { data: session, status } = useSession();
+  const isLoading = status === "loading";
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex justify-center mt-40">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!session) {
+    const router = useRouter();
+    router.push("/admin");
+  }
 
   // Fetch the services data with useSWR
   const {
@@ -130,18 +146,7 @@ export default function ManicurePage({ initialManicureServices, categories }) {
 
 ManicurePage.layout = DashboardLayout;
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/admin",
-        permanent: false,
-      },
-    };
-  }
-
+export async function getStaticProps() {
   const { data: initialManicureServices } = await fetchManicure();
   const { data: categories } = await fetchCategories();
 

@@ -23,12 +23,13 @@ export default function SettingsPage({ categories }) {
 
 SettingsPage.layout = DashboardLayout;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const { data: categories } = await fetchCategories();
 
   return {
     props: {
       categories,
     },
+    revalidate: 10,
   };
 }

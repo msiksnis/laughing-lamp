@@ -11,7 +11,8 @@ import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { fetchLashes } from "../../../utils/fetchLashes";
 import { fetchBrows } from "../../../utils/fetchBrows";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function LashesAndBrowsPage({
   initialLashesServices,
@@ -20,6 +21,21 @@ export default function LashesAndBrowsPage({
 }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
+  const { data: session, status } = useSession();
+  const isLoading = status === "loading";
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex justify-center mt-40">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!session) {
+    const router = useRouter();
+    router.push("/admin");
+  }
 
   // Fetch the Lashes services data with useSWR
   const {
@@ -143,18 +159,7 @@ export default function LashesAndBrowsPage({
 
 LashesAndBrowsPage.layout = DashboardLayout;
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/admin",
-        permanent: false,
-      },
-    };
-  }
-
+export async function getStaticProps() {
   const { data: initialLashesServices } = await fetchLashes();
   const { data: initialBrowsServices } = await fetchBrows();
   const { data: categories } = await fetchCategories();
@@ -165,5 +170,6 @@ export async function getServerSideProps(context) {
       initialBrowsServices,
       categories,
     },
+    revalidate: 10,
   };
 }
