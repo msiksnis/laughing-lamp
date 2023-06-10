@@ -18,13 +18,12 @@ export default function HomePage({ services: initialServices }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data: services } = await fetchServices();
 
   return {
     props: {
       services,
     },
-    revalidate: 10,
   };
 }
