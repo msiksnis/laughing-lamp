@@ -9,7 +9,7 @@ export default function WarningModal({ isOpen, setIsOpen, onDelete }) {
           open={isOpen}
           onClose={setIsOpen}
           as="div"
-          className="fixed inset-0 pb-96 sm:pb-0 z-10 flex items-center justify-center overflow-y-auto"
+          className="fixed inset-0 md:pb-60 sm:pb-40 pb-[30rem] z-10 flex items-center justify-center overflow-y-auto"
         >
           <Dialog.Overlay />
           <div className="fixed inset-0 transition-opacity" aria-hidden="true">

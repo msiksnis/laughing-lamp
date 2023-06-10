@@ -26,7 +26,10 @@ export default async function handler(req, res) {
           return;
         }
 
-        res.status(200).json({ success: true, data: service });
+        const serviceData = service.toObject(); // convert mongoose document to plain JS object
+        serviceData.categoryName = service.category.categoryName; // use 'categoryName' field
+
+        res.status(200).json({ success: true, data: serviceData });
       } catch (error) {
         console.error("DB error:", error);
         res.status(400).json({ success: false });

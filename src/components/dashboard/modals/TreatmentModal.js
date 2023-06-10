@@ -186,7 +186,7 @@ export default function TreatmentModal({
           open={isOpen}
           onClose={setIsOpen}
           as="div"
-          className="fixed inset-0 pb-40 sm:pb-0 z-10 flex items-center justify-center overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto"
         >
           <Dialog.Overlay />
           <div className="fixed inset-0 transition-opacity" aria-hidden="true">

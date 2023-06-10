@@ -21,7 +21,7 @@
   display: none; /* Chrome, Safari and Edge */
 }
 
-.truncate {
+.truncate-text {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -30,4 +30,63 @@
 
 .gradient {
   background: linear-gradient(to right, #f00, #0f0, #00f);
+}
+
+.edit-icon {
+  position: relative;
+}
+
+.edit-icon:before {
+  border: 3px solid rgb(15 23 42);
+  border-radius: 3px;
+  content: "";
+  display: inline-block;
+  height: 50%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
+}
+.edit .edit-icon:after {
+  background: rgb(249 250 251);
+  border: 2px rgb(15 23 42) solid;
+  border-bottom-left-radius: 5px 15px;
+  border-bottom-right-radius: 5px 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-shadow: 0 0 0 2px rgb(249 250 251);
+  content: "";
+  display: inline-block;
+  height: 55%;
+  position: absolute;
+  top: 7%;
+  left: 45%;
+  width: 6px;
+  transform: translate(0, 0) rotate(45deg);
+  transform-origin: 50% 75%;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.edit:hover span:after {
+  background: rgb(243 244 246);
+  box-shadow: 0 0 0 2px rgb(243 244 246);
+  animation: wiggle 0.25s 3 linear;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  25% {
+    transform: translate(0, 0) rotate(25deg);
+  }
+  50% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  75% {
+    transform: translate(0, 0) rotate(65deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(45deg);
+  }
 }
