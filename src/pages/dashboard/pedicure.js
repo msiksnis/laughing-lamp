@@ -18,6 +18,7 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
   const { isExpanded } = useSidebarContext();
   const { data: session, status } = useSession();
   const isLoading = status === "loading";
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -28,8 +29,8 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
   }
 
   if (!session) {
-    const router = useRouter();
     router.push("/admin");
+    return;
   }
 
   // Fetch the services data with useSWR

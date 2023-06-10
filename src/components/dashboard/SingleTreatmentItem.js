@@ -86,7 +86,7 @@ export default function SingleTreatmentItem({ service, category, categories }) {
               <div className="capitalize">{service.gender}</div>
             </div>
           </div>
-          <div className="flex justify-center space-x-2 bg-gray-50 mt-6 py-4 rounded-b-md">
+          <div className="flex justify-center space-x-2 bg-gray-50 mt-6 p-4 rounded-b-md">
             <button
               onClick={() => setIsEditModalOpen(true)}
               className="edit bg-gray-50 rounded-md text-slate-900 cursor-pointer flex h-10 items-center justify-center w-1/2 max-w-xs outline-none border border-gray-600 hover:bg-gray-100 transition-colors duration-300"
