@@ -20,19 +20,6 @@ export default function ManicurePage({ initialManicureServices, categories }) {
   const isLoading = status === "loading";
   const router = useRouter();
 
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center mt-40">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!session) {
-    router.push("/admin");
-    return;
-  }
-
   // Fetch the services data with useSWR
   const {
     data: { data: services = [] } = {},
@@ -62,6 +49,19 @@ export default function ManicurePage({ initialManicureServices, categories }) {
         />
       </div>
     );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex justify-center mt-40">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!session) {
+    router.push("/admin");
+    return;
   }
 
   const maleServices = services.filter((service) => service.gender === "male");

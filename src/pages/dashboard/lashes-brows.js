@@ -25,19 +25,6 @@ export default function LashesAndBrowsPage({
   const isLoading = status === "loading";
   const router = useRouter();
 
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center mt-40">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!session) {
-    router.push("/admin");
-    return;
-  }
-
   // Fetch the Lashes services data with useSWR
   const {
     data: { data: lashesServices = [] } = {},
@@ -78,6 +65,19 @@ export default function LashesAndBrowsPage({
         />
       </div>
     );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex justify-center mt-40">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!session) {
+    router.push("/admin");
+    return;
   }
 
   const createNewTreatment = async (treatment) => {
