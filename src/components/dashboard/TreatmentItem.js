@@ -1,11 +1,11 @@
 import { TbDragDrop2 as DragDropIcon } from "react-icons/tb";
 import { HiOutlineTrash as Delete } from "react-icons/hi";
 import { FiEdit as Edit } from "react-icons/fi";
-import WarningModal from "./Modals/WarningModal";
+import WarningModal from "./AllModals/WarningModal";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
-import TreatmentModal from "./Modals/TreatmentModal";
+import TreatmentModal from "./AllModals/TreatmentModal";
 import { Reorder } from "framer-motion";
 import { useMotionValue } from "framer-motion";
 import { useRaisedShadow } from "../../../hooks/useRaisedShadow";

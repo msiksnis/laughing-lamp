@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import MobileMenu from "./MobileMenu";
-import SearchModal from "../Modals/SearchModal";
+import SearchModal from "../AllModals/SearchModal";
 
 export default function DashboardHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

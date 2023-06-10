@@ -3,7 +3,7 @@ import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchCategories } from "../../../utils/fetchCategories";
-import TreatmentModal from "@/components/dashboard/Modals/TreatmentModal";
+import TreatmentModal from "@/components/dashboard/AllModals/TreatmentModal";
 import useSWR from "swr";
 import { Oval } from "react-loader-spinner";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";

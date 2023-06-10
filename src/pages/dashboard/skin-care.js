@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchSkinCare } from "../../../utils/fetchSkinCare";
 import { fetchCategories } from "../../../utils/fetchCategories";
-import TreatmentModal from "@/components/dashboard/Modals/TreatmentModal";
+import TreatmentModal from "@/components/dashboard/AllModals/TreatmentModal";
 import useSWR from "swr";
 import { Oval } from "react-loader-spinner";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
