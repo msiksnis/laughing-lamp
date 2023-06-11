@@ -67,8 +67,8 @@ export default function TreatmentItem({ service, category, categories }) {
   };
 
   const handlePointerDown = (e) => {
-    e.preventDefault();
-    dragControls.start(e, { snapToCursor: true });
+    // e.preventDefault();
+    dragControls.start(e);
   };
 
   return (
@@ -76,7 +76,7 @@ export default function TreatmentItem({ service, category, categories }) {
       <Reorder.Item
         value={service}
         id={service._id}
-        style={{ boxShadow, y }}
+        style={{ boxShadow, y, touchAction: "none" }}
         className="hidden md:block"
       >
         <motion.div

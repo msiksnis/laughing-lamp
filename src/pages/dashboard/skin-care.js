@@ -12,9 +12,11 @@ import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Reorder } from "framer-motion";
 
 export default function SkinCarePage({ initialSkinCareServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
+
   const { isExpanded } = useSidebarContext();
   const { data: session, status } = useSession();
   const isLoading = status === "loading";
@@ -114,11 +116,13 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Female Skin Care Treatments
           </h2>
-          <TreatmentList
-            services={femaleServices}
-            category="skin-care"
-            categories={categories}
-          />
+          <Reorder.Group values={femaleServices} onReorder={femaleServices}>
+            <TreatmentList
+              services={femaleServices}
+              category="skin-care"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       {maleServices.length > 0 && (
@@ -126,11 +130,13 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Male Skin Care Treatments
           </h2>
-          <TreatmentList
-            services={maleServices}
-            category="skin-care"
-            categories={categories}
-          />
+          <Reorder.Group values={maleServices} onReorder={maleServices}>
+            <TreatmentList
+              services={maleServices}
+              category="skin-care"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       <TreatmentModal
