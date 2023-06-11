@@ -146,9 +146,9 @@ export default function TreatmentItem({ service, category, categories }) {
       </Reorder.Item>
       <div
         style={{
-          touchAction: isDragging ? "none" : "",
-          pointerEvents: isDragging ? "none" : "auto",
-          opacity: isDragging ? 0.5 : 1,
+          // touchAction: isDragging ? "none" : "",
+          // pointerEvents: isDragging ? "none" : "auto",
+          touchAction: "none",
         }}
         // onTouchMove={(e) => {
         //   if (isDragging) e.preventDefault();
