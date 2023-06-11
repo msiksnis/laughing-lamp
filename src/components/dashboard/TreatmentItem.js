@@ -138,12 +138,13 @@ export default function TreatmentItem({ service, category, categories }) {
         style={{ boxShadow, y }}
         className="md:hidden"
       >
-        <motion.div className="flex justify-center items-center h-full mb-4">
+        <motion.div className="flex justify-center items-center h-full mb-3">
           <div className="bg-white w-full item-shadow select-none">
-            <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-4">
+            <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
               <div
                 className="bg-slate-50 h-full p-1 flex items-center"
                 onPointerDown={(e) => {
+                  e.preventDefault();
                   dragControls.start(e);
                 }}
               >
