@@ -50,13 +50,13 @@ export default function SidebarMenu() {
           </>
         )}
       </div>
-      <div className="flex flex-col space-y-3 mt-20 whitespace-nowrap uppercase">
+      <div className="flex flex-col space-y-1 mt-20 whitespace-nowrap uppercase">
         {menuItems.map(({ text, icon, route }) => (
           <div
             key={text}
             onClick={() => onMenuItemClick(text, route)}
-            className={`flex items-center cursor-pointer hover:bg-slate-100 rounded transition-all duration-300 ${
-              router.asPath === route ? "bg-slate-100 rounded" : ""
+            className={`flex py-1 items-center cursor-pointer hover:bg-slate-100 rounded transition-all duration-300 ${
+              router.asPath === route ? "bg-slate-200 rounded" : ""
             }`}
           >
             <div className="relative flex items-center space-x-4 ml-2">
@@ -65,7 +65,9 @@ export default function SidebarMenu() {
                 alt={text}
                 width={40}
                 height={40}
-                className="bg-slate-100 rounded-full p-[3px]"
+                className={`rounded-full p-[3px] ${
+                  router.asPath === route ? "bg-slate-200" : "bg-slate-100"
+                }`}
               />
               <div className="absolute left-10 w-40 overflow-hidden">
                 {text}

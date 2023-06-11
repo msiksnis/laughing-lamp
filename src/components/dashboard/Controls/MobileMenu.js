@@ -19,18 +19,19 @@ export default function MobileMenu() {
           key={text}
           onClick={() => onMenuItemClick(text, route)}
           className={`flex items-center cursor-pointer ${
-            router.asPath === route ? "bg-slate-100 rounded" : ""
+            router.asPath === route ? "bg-slate-200 rounded" : ""
           }`}
         >
-          <div className="relative flex items-center m-1">
+          <div className="flex items-center m-1">
             <Image
               src={icon}
               alt={text}
               width={60}
               height={60}
-              className="bg-slate-100 rounded-full p-[2px] sm:p-[4px]"
+              className={`rounded-full p-[2px] sm:p-[4px] ${
+                router.asPath === route ? "bg-slate-200" : "bg-slate-100"
+              }`}
             />
-            {/* <div className="absolute left-10 w-40 overflow-hidden">{text}</div> */}
           </div>
         </div>
       ))}

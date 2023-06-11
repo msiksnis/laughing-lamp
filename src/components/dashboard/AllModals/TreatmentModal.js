@@ -233,19 +233,19 @@ export default function TreatmentModal({
             >
               <Dialog.Title
                 as="h3"
-                className="text-lg leading-6 font-medium text-gray-900 pt-4 text-center uppercase"
+                className="md:text-lg leading-6 font-medium text-gray-900 pt-4 text-center uppercase"
                 id="modal-headline"
               >
                 {mode === "create" ? "Add a new treatment" : "Edit treatment"}
               </Dialog.Title>
 
               <form onSubmit={handleSubmit}>
-                <div className="modal-content p-4 pt-6">
+                <div className="modal-content p-4 md:pt-6">
                   <div className="relative">
                     <input
                       type="text"
                       placeholder="Title"
-                      className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                      className={`w-full p-1.5 md:p-2 border border-gray-300 rounded mb-4 md:mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
                         titleError ? "border border-red-500" : ""
                       }`}
                       value={title}
@@ -263,7 +263,7 @@ export default function TreatmentModal({
                       <input
                         type="number"
                         placeholder="Price"
-                        className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                        className={`w-full p-1.5 md:p-2 border border-gray-300 rounded mb-4 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
                           priceError ? "border border-red-500" : ""
                         }`}
                         value={price}
@@ -280,7 +280,7 @@ export default function TreatmentModal({
                       <input
                         type="number"
                         placeholder="Duration"
-                        className={`w-full p-2 border border-gray-300 rounded mb-6 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
+                        className={`w-full p-1.5 md:p-2 border border-gray-300 rounded mb-4 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
                           durationError ? "border border-red-500" : ""
                         }`}
                         value={duration}
@@ -297,7 +297,7 @@ export default function TreatmentModal({
                   <div className="relative">
                     <textarea
                       placeholder="Description"
-                      className="w-full p-2 border border-gray-300 rounded mb-5 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900"
+                      className="w-full p-1.5 md:p-2 border border-gray-300 rounded mb-3 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900"
                       value={description || ""}
                       onChange={handleDescriptionChange}
                     />
@@ -309,11 +309,11 @@ export default function TreatmentModal({
                     </label>
                   </div>
                   <div
-                    className={`border p-4 rounded mb-6 ${
+                    className={`border p-2.5 md:p-4 rounded mb-4 md:mb-6 ${
                       genderError ? "border border-red-500" : ""
                     }`}
                   >
-                    <p className="mb-2 text-gray-800">Select gender</p>
+                    <p className="mb-1 md:mb-2 text-gray-800">Select gender</p>
                     <div className="flex space-x-5">
                       <label className="inline-flex items-center cursor-pointer">
                         <input
@@ -338,11 +338,13 @@ export default function TreatmentModal({
                     </div>
                   </div>
                   <div
-                    className={`border p-4 rounded ${
+                    className={`border p-2.5 md:p-4 rounded ${
                       categoryError ? "border border-red-500" : ""
                     }`}
                   >
-                    <p className="mb-2 text-gray-800">Select category</p>
+                    <p className="mb-1 md:mb-2 text-gray-800">
+                      Select category
+                    </p>
                     <div className="flex flex-col">
                       {categories &&
                         categories.map((category) => (
@@ -370,13 +372,13 @@ export default function TreatmentModal({
                   <button
                     type="button"
                     onClick={() => setIsOpen(false)}
-                    className="py-2 w-1/2 border bg-white hover:bg-gray-50 border-gray-300 rounded mr-2 transition-all duration-300 focus:outline-none"
+                    className="py-1.5 md:py-2 w-1/2 border bg-white hover:bg-gray-50 border-gray-300 rounded mr-2 transition-all duration-300 focus:outline-none"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="py-2 w-1/2 bg-slate-900 text-white border border-slate-900 rounded hover:bg-white hover:text-slate-900 transition-all duration-300 focus:outline-none"
+                    className="py-1.5 md:py-2 w-1/2 bg-slate-900 text-white border border-slate-900 rounded hover:bg-white hover:text-slate-900 transition-all duration-300 focus:outline-none"
                   >
                     {mode === "create" ? "Add" : "Save"}
                   </button>
