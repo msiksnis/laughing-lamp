@@ -19,7 +19,7 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="mt-40 md:mt-0 md:pb-20 h-screen p-4 flex justify-center items-center">
+    <div className="-mt-20 md:mt-0 md:pb-20 h-screen p-4 flex justify-center items-center">
       <div className="flex flex-col items-center space-y-4">
         <div className="mb-2 text-xl text-center">
           This part is for admin only <br /> please sign in
