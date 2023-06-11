@@ -12,6 +12,7 @@ import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Reorder } from "framer-motion";
 
 export default function ManicurePage({ initialManicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
@@ -114,11 +115,13 @@ export default function ManicurePage({ initialManicureServices, categories }) {
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Female Manicure Treatments
           </h2>
-          <TreatmentList
-            services={femaleServices}
-            category="manicure"
-            categories={categories}
-          />
+          <Reorder.Group values={femaleServices} onReorder={femaleServices}>
+            <TreatmentList
+              services={femaleServices}
+              category="manicure"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       {maleServices.length > 0 && (
@@ -126,11 +129,13 @@ export default function ManicurePage({ initialManicureServices, categories }) {
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Male Manicure Treatments
           </h2>
-          <TreatmentList
-            services={maleServices}
-            category="manicure"
-            categories={categories}
-          />
+          <Reorder.Group values={maleServices} onReorder={maleServices}>
+            <TreatmentList
+              services={maleServices}
+              category="manicure"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       <TreatmentModal
