@@ -13,6 +13,7 @@ import { fetchLashes } from "../../../utils/fetchLashes";
 import { fetchBrows } from "../../../utils/fetchBrows";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Reorder } from "framer-motion";
 
 export default function LashesAndBrowsPage({
   initialLashesServices,
@@ -127,11 +128,13 @@ export default function LashesAndBrowsPage({
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Lash Treatments
           </h2>
-          <TreatmentList
-            services={lashesServices}
-            category="lashes"
-            categories={categories}
-          />
+          <Reorder.Group values={lashesServices} onReorder={lashesServices}>
+            <TreatmentList
+              services={lashesServices}
+              category="lashes"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       {browsServices.length > 0 && (
@@ -139,11 +142,13 @@ export default function LashesAndBrowsPage({
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Brow Treatments
           </h2>
-          <TreatmentList
-            services={browsServices}
-            category="brows"
-            categories={categories}
-          />
+          <Reorder.Group values={browsServices} onReorder={browsServices}>
+            <TreatmentList
+              services={browsServices}
+              category="brows"
+              categories={categories}
+            />
+          </Reorder.Group>
         </>
       )}
       <TreatmentModal

@@ -150,7 +150,11 @@ export default function TreatmentItem({ service, category, categories }) {
         drag
         dragControls={dragControls}
         dragListener={false}
-        style={{ y }}
+        style={{
+          y,
+          scale: isDragging ? 1.05 : 1,
+          transition: "scale 0.2s easeInOut",
+        }}
         className="md:hidden"
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setIsDragging(false)}
@@ -159,13 +163,10 @@ export default function TreatmentItem({ service, category, categories }) {
           <div className="bg-white w-full item-shadow select-none">
             <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
               <div
-                className="bg-slate-50 h-full p-1 flex items-center"
+                className="bg-slate-50 h-full p-1 flex items-center touch-none"
                 onPointerDown={handlePointerDown}
                 onTouchStart={() => setIsDragging(true)}
                 onTouchEnd={() => setIsDragging(false)}
-                style={{
-                  touchAction: "none",
-                }}
               >
                 <DragDropIcon className="h-7 w-7 opacity-80" />
               </div>
