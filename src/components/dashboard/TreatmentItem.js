@@ -147,7 +147,7 @@ export default function TreatmentItem({ service, category, categories }) {
       <Reorder.Item
         value={service}
         id={service._id}
-        drag
+        drag="y"
         dragControls={dragControls}
         dragListener={false}
         style={{
