@@ -144,20 +144,21 @@ export default function TreatmentItem({ service, category, categories }) {
               <div
                 className="bg-slate-50 h-full p-1 flex items-center"
                 onPointerDown={(e) => {
-                  // Prevents default action of the initial event
-                  e.preventDefault();
+                  // Get a reference to the body
+                  const body = document.body;
 
-                  // Adds event listener to prevent default action of touchmove
-                  document.addEventListener("touchmove", preventDefault, {
-                    passive: false,
-                  });
+                  // Disable pointer events on the body
+                  body.style.pointerEvents = "none";
 
-                  // Starts drag operation
+                  // Start drag operation
                   dragControls.start(e);
                 }}
                 onPointerUp={() => {
-                  // Removes event listener when drag operation ends
-                  document.removeEventListener("touchmove", preventDefault);
+                  // Get a reference to the body
+                  const body = document.body;
+
+                  // Re-enable pointer events on the body
+                  body.style.pointerEvents = "";
                 }}
               >
                 <DragDropIcon className="h-7 w-7 opacity-80" />
