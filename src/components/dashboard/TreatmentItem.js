@@ -153,7 +153,6 @@ export default function TreatmentItem({ service, category, categories }) {
         style={{
           y,
           scale: isDragging ? 1.05 : 1,
-          transition: "scale 0.2s easeInOut",
         }}
         className="md:hidden"
         onDragStart={() => setIsDragging(true)}
