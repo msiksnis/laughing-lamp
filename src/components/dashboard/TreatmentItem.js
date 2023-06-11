@@ -148,10 +148,11 @@ export default function TreatmentItem({ service, category, categories }) {
         style={{
           touchAction: isDragging ? "none" : "",
           pointerEvents: isDragging ? "none" : "auto",
+          opacity: isDragging ? 0.5 : 1,
         }}
-        onTouchMove={(e) => {
-          if (isDragging) e.preventDefault();
-        }}
+        // onTouchMove={(e) => {
+        //   if (isDragging) e.preventDefault();
+        // }}
       >
         <Reorder.Item
           value={service}
