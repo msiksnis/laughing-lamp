@@ -16,6 +16,7 @@ export default function TreatmentItem({ service, category, categories }) {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [treatmentToDelete, setTreatmentToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const dragControls = useDragControls();
 
@@ -70,6 +71,15 @@ export default function TreatmentItem({ service, category, categories }) {
     e.preventDefault();
     dragControls.start(e);
   };
+
+  dragControls.subscribe({
+    start() {
+      setIsDragging(true);
+    },
+    end() {
+      setIsDragging(false);
+    },
+  });
 
   return (
     <>
@@ -134,68 +144,82 @@ export default function TreatmentItem({ service, category, categories }) {
           />
         </motion.div>
       </Reorder.Item>
-      <Reorder.Item
-        value={service}
-        id={service._id}
-        drag
-        dragControls={dragControls}
-        dragListener={false}
-        style={{ boxShadow, y }}
-        className="md:hidden"
+      <div
+        style={{
+          touchAction: isDragging ? "none" : "",
+          pointerEvents: isDragging ? "none" : "auto",
+        }}
+        onTouchMove={(e) => {
+          if (isDragging) e.preventDefault();
+        }}
       >
-        <motion.div className="flex justify-center items-center h-full mb-3">
-          <div className="bg-white w-full item-shadow select-none">
-            <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
-              <div
-                className="bg-slate-50 h-full p-1 flex items-center"
-                onPointerDown={handlePointerDown}
-              >
-                <DragDropIcon className="h-7 w-7 opacity-80" />
-              </div>
-              <div className="grid grid-rows-[auto,auto] gap-0">
-                <div className="truncate">{service.title}</div>
-                <div className="truncate text-sm opacity-60">
-                  {service.description}
+        <Reorder.Item
+          value={service}
+          id={service._id}
+          drag
+          dragControls={dragControls}
+          dragListener={false}
+          style={{ boxShadow, y }}
+          className="md:hidden"
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={() => setIsDragging(false)}
+        >
+          <motion.div className="flex justify-center items-center h-full mb-3">
+            <div className="bg-white w-full item-shadow select-none">
+              <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
+                <div
+                  className="bg-slate-50 h-full p-1 flex items-center"
+                  onPointerDown={handlePointerDown}
+                  onTouchStart={() => setIsDragging(true)}
+                  onTouchEnd={() => setIsDragging(false)}
+                >
+                  <DragDropIcon className="h-7 w-7 opacity-80" />
+                </div>
+                <div className="grid grid-rows-[auto,auto] gap-0">
+                  <div className="truncate">{service.title}</div>
+                  <div className="truncate text-sm opacity-60">
+                    {service.description}
+                  </div>
+                </div>
+                <h3 className="whitespace-nowrap font-normal">
+                  ${service.price}
+                </h3>
+                <div className="flex flex-col items-center justify-center border-l border-gray-400 ">
+                  <Edit
+                    data-drag-disabled
+                    onClick={() => setIsEditModalOpen(true)}
+                    className="h-8 w-8 px-1.5"
+                  />
+                  <Delete
+                    data-drag-disabled
+                    onClick={() => {
+                      setIsWarningModalOpen(true);
+                      setTreatmentToDelete(service);
+                    }}
+                    className="h-8 w-8 px-1.5"
+                  />
                 </div>
               </div>
-              <h3 className="whitespace-nowrap font-normal">
-                ${service.price}
-              </h3>
-              <div className="flex flex-col items-center justify-center border-l border-gray-400 ">
-                <Edit
-                  data-drag-disabled
-                  onClick={() => setIsEditModalOpen(true)}
-                  className="h-8 w-8 px-1.5"
-                />
-                <Delete
-                  data-drag-disabled
-                  onClick={() => {
-                    setIsWarningModalOpen(true);
-                    setTreatmentToDelete(service);
-                  }}
-                  className="h-8 w-8 px-1.5"
-                />
-              </div>
             </div>
-          </div>
-          <WarningModal
-            isOpen={isWarningModalOpen}
-            setIsOpen={setIsWarningModalOpen}
-            onDelete={() => {
-              onDelete(treatmentToDelete);
-              setIsWarningModalOpen(false);
-            }}
-          />
-          <TreatmentModal
-            isOpen={isEditModalOpen}
-            setIsOpen={setIsEditModalOpen}
-            onSubmit={updateTreatment}
-            categories={categories}
-            mode="edit"
-            initialTreatment={service}
-          />
-        </motion.div>
-      </Reorder.Item>
+            <WarningModal
+              isOpen={isWarningModalOpen}
+              setIsOpen={setIsWarningModalOpen}
+              onDelete={() => {
+                onDelete(treatmentToDelete);
+                setIsWarningModalOpen(false);
+              }}
+            />
+            <TreatmentModal
+              isOpen={isEditModalOpen}
+              setIsOpen={setIsEditModalOpen}
+              onSubmit={updateTreatment}
+              categories={categories}
+              mode="edit"
+              initialTreatment={service}
+            />
+          </motion.div>
+        </Reorder.Item>
+      </div>
     </>
   );
 }
