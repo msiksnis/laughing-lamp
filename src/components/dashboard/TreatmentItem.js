@@ -145,14 +145,9 @@ export default function TreatmentItem({ service, category, categories }) {
         </motion.div>
       </Reorder.Item>
       <div
-        style={{
-          // touchAction: isDragging ? "none" : "",
-          // pointerEvents: isDragging ? "none" : "auto",
-          touchAction: "none",
-        }}
-        // onTouchMove={(e) => {
-        //   if (isDragging) e.preventDefault();
-        // }}
+      // style={{
+      //   touchAction: "none",
+      // }}
       >
         <Reorder.Item
           value={service}
@@ -173,6 +168,9 @@ export default function TreatmentItem({ service, category, categories }) {
                   onPointerDown={handlePointerDown}
                   onTouchStart={() => setIsDragging(true)}
                   onTouchEnd={() => setIsDragging(false)}
+                  style={{
+                    touchAction: "none",
+                  }}
                 >
                   <DragDropIcon className="h-7 w-7 opacity-80" />
                 </div>
