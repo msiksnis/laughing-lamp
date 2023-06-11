@@ -67,7 +67,7 @@ export default function TreatmentItem({ service, category, categories }) {
   };
 
   const handlePointerDown = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     dragControls.start(e);
   };
 
