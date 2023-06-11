@@ -66,6 +66,11 @@ export default function TreatmentItem({ service, category, categories }) {
     }
   };
 
+  const handlePointerDown = (e) => {
+    e.preventDefault();
+    dragControls.start(e, { snapToCursor: true });
+  };
+
   return (
     <>
       <Reorder.Item
@@ -143,23 +148,7 @@ export default function TreatmentItem({ service, category, categories }) {
             <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
               <div
                 className="bg-slate-50 h-full p-1 flex items-center"
-                onPointerDown={(e) => {
-                  // Get a reference to the body
-                  const body = document.body;
-
-                  // Disable pointer events on the body
-                  body.style.pointerEvents = "none";
-
-                  // Start drag operation
-                  dragControls.start(e);
-                }}
-                onPointerUp={() => {
-                  // Get a reference to the body
-                  const body = document.body;
-
-                  // Re-enable pointer events on the body
-                  body.style.pointerEvents = "";
-                }}
+                onPointerDown={handlePointerDown}
               >
                 <DragDropIcon className="h-7 w-7 opacity-80" />
               </div>
