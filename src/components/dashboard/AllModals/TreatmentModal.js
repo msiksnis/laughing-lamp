@@ -33,8 +33,13 @@ export default function TreatmentModal({
     mode === "edit" ? initialTreatment.gender : ""
   );
   const [selectedCategory, setSelectedCategory] = useState(
-    mode === "edit" ? initialTreatment.category : ""
+    mode === "edit"
+      ? typeof initialTreatment.category === "string"
+        ? initialTreatment.category
+        : initialTreatment.category._id
+      : ""
   );
+
   const [titleError, setTitleError] = useState(false);
   const [priceError, setPriceError] = useState(false);
   const [durationError, setDurationError] = useState(false);

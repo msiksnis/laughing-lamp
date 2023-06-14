@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog } from "@headlessui/react";
 import useDebounce from "../../../../hooks/debounce";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createRef, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
 
 export default function SearchModal({
@@ -11,6 +11,9 @@ export default function SearchModal({
   searchResults,
 }) {
   const [search, setSearch] = useState("");
+  const [activeResult, setActiveResult] = useState(-1);
+  const resultRefs = useRef([]);
+
   const debouncedSearchTerm = useDebounce(search, 500);
 
   const router = useRouter();
@@ -19,13 +22,62 @@ export default function SearchModal({
     onSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, onSearch]);
 
-  const handleSearchResultClick = (slug) => {
+  const handleSearchResultClick = (slug, index) => {
     // navigate to the service detail page
     router.push(`/dashboard/product/${slug}`);
-    // reset the search input and results
+    // reset the search input, results, and activeResult
     setSearch("");
     setIsOpen(false);
+    setActiveResult(0);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveResult(-1);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    resultRefs.current = searchResults.map(
+      (_, i) => resultRefs.current[i] || createRef()
+    );
+  }, [searchResults]);
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (searchResults.length > 0) {
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          setActiveResult((prevActiveResult) => {
+            const nextResult = Math.min(
+              prevActiveResult + 1,
+              searchResults.length - 1
+            );
+            resultRefs.current[nextResult]?.current?.focus();
+            return nextResult;
+          });
+        }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          setActiveResult((prevActiveResult) => {
+            const nextResult = Math.max(prevActiveResult - 1, 0);
+            resultRefs.current[nextResult]?.current?.focus();
+            return nextResult;
+          });
+        }
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (searchResults[activeResult]) {
+            handleSearchResultClick(
+              searchResults[activeResult].slug,
+              activeResult
+            );
+          }
+        }
+      }
+    },
+    [searchResults, activeResult, handleSearchResultClick]
+  );
 
   return (
     <AnimatePresence>
@@ -83,16 +135,21 @@ export default function SearchModal({
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
                 </div>
               </div>
               {searchResults.length > 0 && (
                 <div className="py-3 space-y-0 flex flex-col">
-                  {searchResults.map((result) => (
-                    <div
-                      className="flex w-full border-b justify-between items-center cursor-pointer hover:bg-gray-100 px-4 py-2"
+                  {searchResults.map((result, index) => (
+                    <button
+                      className={`flex w-full border-b justify-between items-center cursor-pointer hover:bg-gray-100 px-4 py-2 ${
+                        activeResult === index ? "bg-gray-200" : ""
+                      }`}
                       key={result._id}
-                      onClick={() => handleSearchResultClick(result.slug)}
+                      onClick={() =>
+                        handleSearchResultClick(result.slug, index)
+                      }
                     >
                       <div className="flex justify-start w-4/5 md:w-min space-x-2 items-center">
                         <div className="truncate">{result.title}</div>
@@ -101,7 +158,7 @@ export default function SearchModal({
                         </div>
                       </div>
                       <div className="">${result.price}</div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}

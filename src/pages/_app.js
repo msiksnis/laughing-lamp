@@ -1,3 +1,4 @@
+import { ToastProvider } from "@/contexts/ToastContext";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
@@ -19,10 +20,12 @@ export default function App({
   return (
     <main className={`${poppins.variable} font-poppins`}>
       <SessionProvider session={session}>
-        <Layout>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </Layout>
+        <ToastProvider>
+          <Layout>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </Layout>
+        </ToastProvider>
       </SessionProvider>
     </main>
   );

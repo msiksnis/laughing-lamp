@@ -1,6 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { fetchServiceBySlug } from "../../../../utils/fetchServiceBySlug";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import PackageItem from "@/components/dashboard/PackageItem";
 import GiftCardItem from "@/components/dashboard/GiftCardItem";
@@ -8,27 +6,33 @@ import SingleTreatmentItem from "@/components/dashboard/SingleTreatmentItem";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { fetchCategories } from "../../../../utils/fetchCategories";
 import useSWR from "swr";
-import { fetchServices } from "../../../../utils/fetchServices";
 
 export default function SingleProductPage({ categories }) {
-  const [item, setItem] = useState(null);
   const router = useRouter();
   const { slug } = router.query;
   const { isExpanded } = useSidebarContext();
 
-  useEffect(() => {
-    if (slug) {
-      async function fetchItem() {
-        const item = await fetchServiceBySlug(slug);
-        setItem(item);
-      }
-      fetchItem();
-    }
-  }, [slug]);
+  const fetcher = async (url) => {
+    const res = await fetch(url);
 
-  if (!item) {
+    if (!res.ok) {
+      throw new Error("An error occurred while fetching the data.");
+    }
+
+    return res.json();
+  };
+
+  const { data: item, error } = useSWR(
+    slug ? `/api/get-service-by-slug?slug=${slug}` : null,
+    fetcher
+  );
+
+  if (error)
+    return (
+      <div className="flex justify-center w-full mt-20">Failed to load</div>
+    );
+  if (!item)
     return <div className="flex justify-center w-full mt-20">Loading...</div>;
-  }
 
   const service = item.data;
 

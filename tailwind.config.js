@@ -15,6 +15,9 @@ module.exports = {
       colors: {
         darkBg: "#151415",
       },
+      backgroundImage: {
+        gradientBg: "url('/gradientBackground.jpg')",
+      },
     },
   },
   plugins: [],

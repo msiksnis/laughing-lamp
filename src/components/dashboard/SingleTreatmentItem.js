@@ -1,18 +1,23 @@
 import { HiOutlineTrash as Delete } from "react-icons/hi";
-import { FiEdit as Edit } from "react-icons/fi";
 import WarningModal from "./AllModals/WarningModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import useSWR from "swr";
+import { mutate as globalMutate } from "swr";
 import TreatmentModal from "./AllModals/TreatmentModal";
-import { endpointForCategory } from "./textConversion";
+import { convertCategoryTitle } from "./textConversion";
+import { useRouter } from "next/router";
+import { ToastContext } from "@/contexts/ToastContext";
 
 export default function SingleTreatmentItem({ service, category, categories }) {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [treatmentToDelete, setTreatmentToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { mutate } = useSWR(`/api/get-${endpointForCategory(category)}`);
+  const router = useRouter();
+  const { showToast, hideToast } = useContext(ToastContext);
+  if (typeof showToast !== "function") {
+    throw new Error("showToast must be used within a ToastProvider");
+  }
 
   const onDelete = async (treatment) => {
     try {
@@ -21,15 +26,14 @@ export default function SingleTreatmentItem({ service, category, categories }) {
       });
 
       if (res.ok) {
-        // Refetch the data after delete
-        mutate();
-        toast.success("Treatment deleted successfully!");
+        // Redirect to the dashboard after successful deletion
+        router.push("/dashboard");
       } else {
-        toast.error("Error deleting treatment!");
+        showToast("Error deleting treatment!", "error");
       }
     } catch (error) {
       console.error("Delete treatment error:", error);
-      toast.error("Error deleting treatment!");
+      showToast("Error deleting treatment!", "error");
     }
   };
 
@@ -44,15 +48,20 @@ export default function SingleTreatmentItem({ service, category, categories }) {
       });
 
       if (res.ok) {
-        // Refetch the data after update
-        mutate();
-        toast.success("Treatment updated successfully!");
+        const updatedService = await res.json();
+        // Navigate to the updated page
+        router.push(`/dashboard/product/${updatedService.data.slug}`);
+
+        await globalMutate(
+          `/api/get-service-by-slug?slug=${updatedService.data.slug}`
+        );
+        showToast("Treatment updated successfully!", "success");
       } else {
-        toast.error("Error updating treatment!");
+        showToast("Error updating treatment!", "error");
       }
     } catch (error) {
       console.error("Update treatment error:", error);
-      toast.error("Error updating treatment!");
+      showToast("Error updating treatment!", "error");
     }
   };
 
@@ -85,6 +94,12 @@ export default function SingleTreatmentItem({ service, category, categories }) {
               <div className="text-sm text-gray-500">Gender</div>
               <div className="capitalize">{service.gender}</div>
             </div>
+            <div className="mt-6">
+              <div className="text-sm text-gray-500">Category</div>
+              <div className="capitalize">
+                {convertCategoryTitle(service.category.categoryName)}
+              </div>
+            </div>
           </div>
           <div className="flex justify-center space-x-2 bg-gray-50 mt-6 p-4 rounded-b-md">
             <button
@@ -95,15 +110,14 @@ export default function SingleTreatmentItem({ service, category, categories }) {
               <span className="pl-1 tracking-wider">Edit</span>
             </button>
 
-            <button className="bg-red-400 rounded-md text-slate-900 cursor-pointer flex h-10 items-center justify-center w-1/2 max-w-xs outline-none border border-red-400 hover:bg-red-500 hover:border-red-500 transition-colors duration-300">
-              <Delete
-                data-drag-disabled
-                onClick={() => {
-                  setIsWarningModalOpen(true);
-                  setTreatmentToDelete(service);
-                }}
-                className="h-9 w-9 p-1.5 ml-1 hover:scale-[1.3] transition-all duration-300 hover:text-red-600 cursor-pointer"
-              />
+            <button
+              className="group bg-red-400 rounded-md text-slate-900 cursor-pointer flex h-10 items-center justify-center w-1/2 max-w-xs outline-none border border-red-400 hover:bg-red-500 hover:border-red-500 transition-colors duration-300"
+              onClick={() => {
+                setIsWarningModalOpen(true);
+                setTreatmentToDelete(service);
+              }}
+            >
+              <Delete className="h-9 w-9 p-1.5 ml-1 group-hover:scale-[1.1] transition-all duration-300 cursor-pointer" />
               <span className="pl-1 tracking-wider">Delete</span>
             </button>
           </div>
@@ -118,6 +132,7 @@ export default function SingleTreatmentItem({ service, category, categories }) {
         }}
       />
       <TreatmentModal
+        key={`${service._id}-${service.updatedAt}`}
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
         onSubmit={updateTreatment}

@@ -30,7 +30,6 @@ export default function DashboardHeader() {
     } catch (error) {
       if (error.name === "TypeError" && error.message === "Failed to fetch") {
         console.error("Fetch error due to network suspension:", error);
-        // An adittional logic to retry the request when network is available might be implemented or simply ignore the error.
       } else {
         console.error("Fetch error:", error);
         toast.error("Oops! Something went wrong.");
@@ -40,33 +39,38 @@ export default function DashboardHeader() {
 
   return (
     <>
-      <div className="z-50 flex justify-between items-center px-4 md:px-10  py-4 bg-slate-900 text-gray-300 sticky top-0 shadow">
+      <div className="z-50 flex justify-between items-center px-4 md:px-10 py-2 bg-slate-900 text-gray-300 sticky top-0 shadow">
         <Link href="/dashboard" className="text-2xl tracking-wide italic">
           Dashboard
         </Link>
         <div className="flex justify-between items-center">
-          <div className="p-2 rounded-full cursor-pointer group">
+          <div className="p-4 rounded-full cursor-pointer group">
             <GoSearch
               className="text-gray-400 h-5 w-5 group-hover:text-gray-100 group-hover:-translate-y-[0.5px] transition-all duration-300"
               onClick={() => setIsSearchOpen(true)}
             />
           </div>
-          <div className="text-sm md:border-l md:pl-10 md:ml-10 ml-4">
+          <div className="text-sm md:border-l md:pl-6 ml-4">
             {session?.user?.image && (
-              <Image
-                src={session.user.image}
-                alt="user profile image"
-                width={40}
-                height={40}
-                className="rounded-full cursor-pointer border border-gray-600 hover:border-gray-600/50 transition-all duration-200"
+              <div
+                className="flex items-center h-full cursor-pointer"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              />
+              >
+                <div className="hidden md:block mr-4">{session.user.name}</div>
+                <Image
+                  src={session.user.image}
+                  alt="user profile image"
+                  width={40}
+                  height={40}
+                  className="rounded-full border border-gray-600 hover:border-gray-600/50 transition-all duration-200"
+                />
+              </div>
             )}
             {isDropdownOpen && (
-              <div className="absolute mt-2 right-3 top-[70px] rounded-md item-shadow bg-white text-black uppercase">
+              <div className="absolute mt-2 right-3 md:right-10 top-[70px] rounded-md item-shadow bg-white text-black border border-slate-900 uppercase">
                 <>
                   <button
-                    className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                    className="px-4 md:px-8 py-2 whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
                     onClick={() => {
                       signOut({ callbackUrl: "/admin" });
                       setIsDropdownOpen(false);

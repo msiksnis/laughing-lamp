@@ -1,5 +1,4 @@
 import DashboardHeader from "@/components/dashboard/Controls/DashboardHeader";
-import MobileMenu from "@/components/dashboard/Controls/MobileMenu";
 import SidebarMenu from "@/components/dashboard/Controls/SidebarMenu";
 import { SidebarProvider, useSidebarContext } from "@/contexts/SidebarContext";
 import { getSession } from "next-auth/react";

@@ -97,7 +97,7 @@ export default function TreatmentItem({ service, category, categories }) {
             transition: { duration: 0.2 },
           }}
         >
-          <div className="bg-white group w-full item-shadow hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
+          <div className="bg-white group w-full item-shadow  rounded hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
             <div className="grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr,auto,auto] items-center gap-x-4 pl-4 pr-1">
               <DragDropIcon className="hidden md:block h-8 w-8 opacity-0 group-hover:opacity-80 transition-opacity duration-300 cursor-pointer" />
               <div className="grid grid-rows-[auto,auto] gap-0">
