@@ -134,7 +134,7 @@ export default function GiftCardsPage({ initialGiftCards, categories }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const { data: initialGiftCards } = await fetchGiftCards();
   const { data: categories } = await fetchCategories();
 
@@ -143,7 +143,6 @@ export async function getStaticProps() {
       initialGiftCards,
       categories,
     },
-    revalidate: 10,
   };
 }
 
