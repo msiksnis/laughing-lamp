@@ -31,7 +31,7 @@ export default function SearchModal({
       setIsOpen(false);
       setActiveResult(0);
     },
-    [router]
+    [router, setIsOpen]
   );
 
   useEffect(() => {
