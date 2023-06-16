@@ -22,14 +22,17 @@ export default function SearchModal({
     onSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, onSearch]);
 
-  const handleSearchResultClick = (slug, index) => {
-    // navigate to the service detail page
-    router.push(`/dashboard/product/${slug}`);
-    // reset the search input, results, and activeResult
-    setSearch("");
-    setIsOpen(false);
-    setActiveResult(0);
-  };
+  const handleSearchResultClick = useCallback(
+    (slug, index) => {
+      // navigate to the service detail page
+      router.push(`/dashboard/product/${slug}`);
+      // reset the search input, results, and activeResult
+      setSearch("");
+      setIsOpen(false);
+      setActiveResult(0);
+    },
+    [router]
+  );
 
   useEffect(() => {
     if (isOpen) {
