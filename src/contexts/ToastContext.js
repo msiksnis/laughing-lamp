@@ -1,8 +1,6 @@
 import { createContext, useState, useCallback, useEffect } from "react";
 import * as toastify from "react-toastify";
 
-console.log(toastify); // Log the whole imported module to see if toast is present
-
 export const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {

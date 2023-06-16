@@ -1,50 +1,33 @@
 import { Dialog } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { convertCategoryTitle } from "../textConversion";
 
-export default function TreatmentModal({
+export default function GiftCardModal({
   isOpen,
   setIsOpen,
   onSubmit,
-  categories,
   mode, // create or edit
-  initialTreatment,
+  initialGiftCard,
 }) {
   const [title, setTitle] = useState(
-    mode === "edit" ? initialTreatment.title : ""
+    mode === "edit" ? initialGiftCard.title : ""
   );
-  const [slug, setSlug] = useState(
-    mode === "edit" ? initialTreatment.slug : ""
-  );
+  const [slug, setSlug] = useState(mode === "edit" ? initialGiftCard.slug : "");
   const [order, setOrder] = useState(
-    mode === "edit" ? initialTreatment.order : ""
+    mode === "edit" ? initialGiftCard.order : ""
   );
   const [price, setPrice] = useState(
-    mode === "edit" ? initialTreatment.price : ""
-  );
-  const [duration, setDuration] = useState(
-    mode === "edit" ? initialTreatment.duration : ""
+    mode === "edit" ? initialGiftCard.price : ""
   );
   const [description, setDescription] = useState(
-    mode === "edit" ? initialTreatment.description : ""
+    mode === "edit" ? initialGiftCard.description : ""
   );
-  const [gender, setGender] = useState(
-    mode === "edit" ? initialTreatment.gender : ""
-  );
-  const [selectedCategory, setSelectedCategory] = useState(
-    mode === "edit"
-      ? typeof initialTreatment.category === "string"
-        ? initialTreatment.category
-        : initialTreatment.category._id
-      : ""
+  const [selectedFile, setSelectedFile] = useState(
+    mode === "edit" ? initialGiftCard.imageUrl : "null"
   );
 
   const [titleError, setTitleError] = useState(false);
   const [priceError, setPriceError] = useState(false);
-  const [durationError, setDurationError] = useState(false);
-  const [genderError, setGenderError] = useState(false);
-  const [categoryError, setCategoryError] = useState(false);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -54,35 +37,21 @@ export default function TreatmentModal({
     setPrice(e.target.value);
   };
 
-  const handleDurationChange = (e) => {
-    setDuration(e.target.value);
-  };
-
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
-  const handleGenderChange = (e) => {
-    setGender(e.target.value);
-  };
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   useEffect(() => {
-    // Only generate slug if both title and gender have been set
-    if (title && gender) {
-      const newSlug = title
-        .toLowerCase()
-        .replace(/[^\w ]+|[()]/g, "")
-        .replace(/ +/g, "-");
-
-      const genderSlug = `${newSlug}-${gender}`;
-
-      setSlug(genderSlug);
-    }
-  }, [title, gender]);
+    const newSlug = title
+      .toLowerCase()
+      .replace(/[^\w ]+|[()]/g, "")
+      .replace(/ +/g, "-");
+    setSlug(newSlug);
+  }, [title]);
 
   useEffect(() => {
     // If title has a value, remove error state
@@ -98,36 +67,13 @@ export default function TreatmentModal({
     }
   }, [price]);
 
-  useEffect(() => {
-    // If duration has a value, remove error state
-    if (duration) {
-      setDurationError(false);
-    }
-  }, [duration]);
-
-  useEffect(() => {
-    // If gender has a value, remove error state
-    if (gender) {
-      setGenderError(false);
-    }
-  }, [gender]);
-
-  useEffect(() => {
-    // If selectedCategory has a value, remove error state
-    if (selectedCategory) {
-      setCategoryError(false);
-    }
-  }, [selectedCategory]);
-
   const resetForm = () => {
     setTitle("");
     setSlug("");
     setOrder("");
     setPrice("");
-    setDuration("");
     setDescription("");
-    setGender("");
-    setSelectedCategory("");
+    setSelectedFile(null);
   };
 
   const handleSubmit = async (e) => {
@@ -146,38 +92,40 @@ export default function TreatmentModal({
       formIsValid = false; // set form invalid
     }
 
-    if (!duration) {
-      setDurationError(true);
-      formIsValid = false; // set form invalid
-    }
-
-    if (!gender) {
-      setGenderError(true);
-      formIsValid = false; // set form invalid
-    }
-
-    if (!selectedCategory) {
-      setCategoryError(true);
-      formIsValid = false; // set form invalid
-    }
-
     // Only proceed if form is valid
     if (formIsValid) {
-      const treatment = {
+      // Using FormData to create a new form containing only the image
+      let imageFormData = new FormData();
+      imageFormData.append("file", selectedFile);
+      imageFormData.append("upload_preset", "tti1vzqp"); // Replace with upload preset
+
+      // Sends a request to Cloudinary
+      let imageRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: imageFormData,
+        }
+      );
+
+      // Parse the JSON response from Cloudinary
+      let imageJson = await imageRes.json();
+      // The URL of the uploaded image is available in imageJson.secure_url
+
+      const giftCard = {
         title,
         slug,
         order,
         price,
-        duration,
         description,
-        gender,
-        category: selectedCategory,
+        category: "6474ddbfc91ec8f68b4f3ef8", // directly sets category as 'gift-cards' using ObjectId
+        imageUrl: imageJson.secure_url, // Adds the Cloudinary URL as the image field
       };
 
       if (mode === "create") {
-        onSubmit(treatment);
+        onSubmit(giftCard);
       } else {
-        onSubmit(initialTreatment._id, treatment); // Pass the ID of the treatment to be edited
+        onSubmit(initialGiftCard._id, giftCard); // Pass the ID of the giftCard to be edited
       }
       resetForm();
       setIsOpen(false);
@@ -241,7 +189,7 @@ export default function TreatmentModal({
                 className="md:text-lg leading-6 font-medium text-gray-900 pt-4 text-center uppercase"
                 id="modal-headline"
               >
-                {mode === "create" ? "Add a new treatment" : "Edit treatment"}
+                {mode === "create" ? "Add new Gift Card" : "Edit Gift Card"}
               </Dialog.Title>
 
               <form onSubmit={handleSubmit}>
@@ -281,23 +229,6 @@ export default function TreatmentModal({
                         Price
                       </label>
                     </div>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        placeholder="Duration"
-                        className={`w-full p-1.5 md:p-2 border border-gray-300 rounded mb-4 pl-2.5 peer placeholder-transparent focus:outline-none focus:border-slate-900 ${
-                          durationError ? "border border-red-500" : ""
-                        }`}
-                        value={duration}
-                        onChange={handleDurationChange}
-                      />
-                      <label
-                        htmlFor="duration"
-                        className="absolute left-1.5 -top-3 text-sm bg-white px-1 text-gray-400 transition-all peer-placeholder-shown:text-gray-400 focus:text-gray-400 peer-placeholder-shown:top-2 peer-focus:text-base peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-slate-700"
-                      >
-                        Duration
-                      </label>
-                    </div>
                   </div>
                   <div className="relative">
                     <textarea
@@ -313,64 +244,13 @@ export default function TreatmentModal({
                       Description
                     </label>
                   </div>
-                  <div
-                    className={`border p-2.5 md:p-4 rounded mb-4 md:mb-6 ${
-                      genderError ? "border border-red-500" : ""
-                    }`}
-                  >
-                    <p className="mb-1 md:mb-2 text-gray-800">Select gender</p>
-                    <div className="flex space-x-5">
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          value="female"
-                          checked={gender === "female"}
-                          onChange={handleGenderChange}
-                          className="cursor-pointer accent-slate-900"
-                        />
-                        <span className="ml-2">Female</span>
-                      </label>
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          value="male"
-                          checked={gender === "male"}
-                          onChange={handleGenderChange}
-                          className="cursor-pointer accent-slate-900"
-                        />
-                        <span className="ml-2">Male</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    className={`border p-2.5 md:p-4 rounded ${
-                      categoryError ? "border border-red-500" : ""
-                    }`}
-                  >
-                    <p className="mb-1 md:mb-2 text-gray-800">
-                      Select category
-                    </p>
-                    <div className="flex flex-col">
-                      {categories &&
-                        categories.map((category) => (
-                          <label
-                            key={category._id}
-                            className="inline-flex items-center cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              value={category._id}
-                              checked={category._id === selectedCategory}
-                              onChange={handleCategoryChange}
-                              className="cursor-pointer accent-slate-900"
-                            />
-
-                            <span className="ml-2">
-                              {convertCategoryTitle(category.categoryName)}
-                            </span>
-                          </label>
-                        ))}
-                    </div>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                    <label>Upload Image</label>
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 space-x-2 flex">

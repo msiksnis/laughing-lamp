@@ -86,7 +86,7 @@ export default function TreatmentItem({ service, category, categories }) {
       <Reorder.Item
         value={service}
         id={service._id}
-        style={{ boxShadow, y, touchAction: "none" }}
+        style={{ boxShadow, y }}
         className="hidden md:block"
       >
         <motion.div
@@ -97,7 +97,7 @@ export default function TreatmentItem({ service, category, categories }) {
             transition: { duration: 0.2 },
           }}
         >
-          <div className="bg-white group w-full item-shadow  rounded hover:bg-[#f3f3f2] transition-colors duration-300 py-1 select-none">
+          <div className="bg-white group w-full item-shadow rounded py-1 select-none border border-transparent hover:border-slate-900 hover:shadow-3xl transition-all">
             <div className="grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr,auto,auto] items-center gap-x-4 pl-4 pr-1">
               <DragDropIcon className="hidden md:block h-8 w-8 opacity-0 group-hover:opacity-80 transition-opacity duration-300 cursor-pointer" />
               <div className="grid grid-rows-[auto,auto] gap-0">
@@ -159,10 +159,10 @@ export default function TreatmentItem({ service, category, categories }) {
         onDragEnd={() => setIsDragging(false)}
       >
         <motion.div className="flex justify-center items-center h-full mb-3">
-          <div className="bg-white w-full item-shadow select-none">
+          <div className="bg-white w-full item-shadow select-none rounded">
             <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
               <div
-                className="bg-slate-50 h-full p-1 flex items-center touch-none"
+                className="bg-slate-50 h-full p-1 flex items-center touch-none rounded-l"
                 onPointerDown={handlePointerDown}
                 onTouchStart={() => setIsDragging(true)}
                 onTouchEnd={() => setIsDragging(false)}
