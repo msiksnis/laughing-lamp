@@ -19,7 +19,7 @@ module.exports = {
         gradientBg: "url('/gradientBackground.jpg')",
       },
       boxShadow: {
-        "3xl": "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
+        "3xl": "0 3px 8px rgba(0, 0, 0, 0.24)",
       },
     },
   },
