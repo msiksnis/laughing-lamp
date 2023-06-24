@@ -1,5 +1,4 @@
 // /pages/dashboard/manicure.js
-import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchManicure } from "../../../utils/fetchManicure";
@@ -12,8 +11,7 @@ import TreatmentList from "@/components/dashboard/TreatmentList";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Reorder } from "framer-motion";
-
+import AddNewButton from "@/components/dashboard/Ui/AddNewButton";
 export default function ManicurePage({ initialManicureServices, categories }) {
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
   const { isExpanded } = useSidebarContext();
@@ -103,25 +101,20 @@ export default function ManicurePage({ initialManicureServices, categories }) {
     >
       <div className="flex justify-between mt-5 sm:mt-10 md:mt-8 items-center">
         <div className="md:text-4xl text-2xl uppercase">Manicure</div>
-        <button
-          className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none"
-          onClick={() => setIsTreatmentModalOpen(true)}
-        >
-          <GoPlus className="md:h-[18px] md:w-[18px] mr-2" /> Add New
-        </button>
+        <div onClick={() => setIsTreatmentModalOpen(true)}>
+          <AddNewButton />
+        </div>
       </div>
       {femaleServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Female Manicure Treatments
           </h2>
-          <Reorder.Group values={femaleServices} onReorder={femaleServices}>
-            <TreatmentList
-              services={femaleServices}
-              category="manicure"
-              categories={categories}
-            />
-          </Reorder.Group>
+          <TreatmentList
+            services={femaleServices}
+            category="manicure"
+            categories={categories}
+          />
         </>
       )}
       {maleServices.length > 0 && (
@@ -129,13 +122,11 @@ export default function ManicurePage({ initialManicureServices, categories }) {
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Male Manicure Treatments
           </h2>
-          <Reorder.Group values={maleServices} onReorder={maleServices}>
-            <TreatmentList
-              services={maleServices}
-              category="manicure"
-              categories={categories}
-            />
-          </Reorder.Group>
+          <TreatmentList
+            services={maleServices}
+            category="manicure"
+            categories={categories}
+          />
         </>
       )}
       <TreatmentModal

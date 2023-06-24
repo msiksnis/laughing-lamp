@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import PackageItem from "@/components/dashboard/PackageItem";
-import GiftCardItem from "@/components/dashboard/GiftCardItem";
+import GiftCardItem from "@/components/dashboard/GiftCard/GiftCardItem";
 import SingleTreatmentItem from "@/components/dashboard/SingleTreatmentItem";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { fetchCategories } from "../../../../utils/fetchCategories";

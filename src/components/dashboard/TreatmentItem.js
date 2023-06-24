@@ -162,7 +162,7 @@ export default function TreatmentItem({ service, category, categories }) {
           <div className="bg-white w-full item-shadow select-none rounded">
             <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-x-2">
               <div
-                className="bg-slate-50 h-full p-1 flex items-center touch-none rounded-l"
+                className="bg-red-50 h-full p-1 flex items-center touch-none rounded-l"
                 onPointerDown={handlePointerDown}
                 onTouchStart={() => setIsDragging(true)}
                 onTouchEnd={() => setIsDragging(false)}

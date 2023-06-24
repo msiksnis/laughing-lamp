@@ -1,5 +1,4 @@
 // /pages/dashboard/pedicure.js
-import { GoPlus } from "react-icons/go";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchCategories } from "../../../utils/fetchCategories";
@@ -13,7 +12,7 @@ import { fetchLashes } from "../../../utils/fetchLashes";
 import { fetchBrows } from "../../../utils/fetchBrows";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Reorder } from "framer-motion";
+import AddNewButton from "@/components/dashboard/Ui/AddNewButton";
 
 export default function LashesAndBrowsPage({
   initialLashesServices,
@@ -115,26 +114,20 @@ export default function LashesAndBrowsPage({
     >
       <div className="flex justify-between mt-5 sm:mt-10 md:mt-8 items-start md:items-center">
         <div className="md:text-4xl text-2xl uppercase">Lashes and Brows</div>
-        <button
-          className="flex items-center uppercase border border-slate-900 rounded md:px-10 px-6 md:py-2 py-1.5 bg-slate-900 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 shadow focus:outline-none whitespace-nowrap"
-          onClick={() => setIsTreatmentModalOpen(true)}
-        >
-          <GoPlus className="md:h-[18px] md:w-[18px] mr-2" />
-          Add New
-        </button>
+        <div onClick={() => setIsTreatmentModalOpen(true)}>
+          <AddNewButton />
+        </div>
       </div>
       {lashesServices.length > 0 && (
         <>
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Lash Treatments
           </h2>
-          <Reorder.Group values={lashesServices} onReorder={lashesServices}>
-            <TreatmentList
-              services={lashesServices}
-              category="lashes"
-              categories={categories}
-            />
-          </Reorder.Group>
+          <TreatmentList
+            services={lashesServices}
+            category="lashes"
+            categories={categories}
+          />
         </>
       )}
       {browsServices.length > 0 && (
@@ -142,13 +135,11 @@ export default function LashesAndBrowsPage({
           <h2 className="uppercase mt-14 mb-5 text-lg md:text-xl">
             Brow Treatments
           </h2>
-          <Reorder.Group values={browsServices} onReorder={browsServices}>
-            <TreatmentList
-              services={browsServices}
-              category="brows"
-              categories={categories}
-            />
-          </Reorder.Group>
+          <TreatmentList
+            services={browsServices}
+            category="brows"
+            categories={categories}
+          />
         </>
       )}
       <TreatmentModal

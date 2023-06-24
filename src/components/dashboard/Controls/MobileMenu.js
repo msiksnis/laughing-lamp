@@ -19,7 +19,7 @@ export default function MobileMenu() {
           key={text}
           onClick={() => onMenuItemClick(text, route)}
           className={`flex items-center cursor-pointer ${
-            router.asPath === route ? "bg-slate-200 rounded" : ""
+            router.asPath === route ? "bg-red-200 rounded" : ""
           }`}
         >
           <div className="flex items-center m-1">
@@ -29,7 +29,7 @@ export default function MobileMenu() {
               width={60}
               height={60}
               className={`rounded-full p-[2px] sm:p-[4px] ${
-                router.asPath === route ? "bg-slate-200" : "bg-slate-100"
+                router.asPath === route ? "bg-red-200" : "bg-slate-100"
               }`}
             />
           </div>

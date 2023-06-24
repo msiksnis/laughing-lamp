@@ -55,8 +55,10 @@ export default function SidebarMenu() {
           <div
             key={text}
             onClick={() => onMenuItemClick(text, route)}
-            className={`flex py-1 items-center cursor-pointer hover:bg-slate-100 rounded transition-all duration-300 ${
-              router.asPath === route ? "bg-slate-200 rounded" : ""
+            className={`flex py-1 items-center cursor-pointer hover:bg-red-100 rounded transition-all duration-300 ${
+              router.asPath === route
+                ? "bg-red-200 rounded hover:bg-red-200"
+                : ""
             }`}
           >
             <div className="relative flex items-center space-x-4 ml-2">
@@ -66,7 +68,7 @@ export default function SidebarMenu() {
                 width={40}
                 height={40}
                 className={`rounded-full p-[3px] ${
-                  router.asPath === route ? "bg-slate-200" : "bg-slate-100"
+                  router.asPath === route ? "bg-red-200" : "bg-slate-100"
                 }`}
               />
               <div className="absolute left-10 w-40 overflow-hidden">

@@ -39,7 +39,7 @@ export default function DashboardHeader() {
 
   return (
     <>
-      <div className="z-50 flex justify-between items-center px-4 md:px-10 py-2 bg-slate-900 text-gray-300 sticky top-0 shadow">
+      <div className="z-50 flex justify-between items-center px-4 md:px-10 py-2 bg-indigo-800 text-gray-300 sticky top-0 shadow">
         <Link href="/dashboard" className="text-2xl tracking-wide italic">
           Dashboard
         </Link>
