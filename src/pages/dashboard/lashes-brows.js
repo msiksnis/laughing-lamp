@@ -60,8 +60,8 @@ export default function LashesAndBrowsPage({
           width={80}
           strokeWidth={3}
           strokeWidthSecondary={3}
-          color="#d9d9d9"
-          secondaryColor="#e6e6e6"
+          color="#FEF1F2"
+          secondaryColor="#FFCBCA"
         />
       </div>
     );
