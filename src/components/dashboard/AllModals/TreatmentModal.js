@@ -352,24 +352,31 @@ export default function TreatmentModal({
                     </p>
                     <div className="flex flex-col">
                       {categories &&
-                        categories.map((category) => (
-                          <label
-                            key={category._id}
-                            className="inline-flex items-center cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              value={category._id}
-                              checked={category._id === selectedCategory}
-                              onChange={handleCategoryChange}
-                              className="cursor-pointer accent-slate-900"
-                            />
+                        categories
+                          .filter((category) => {
+                            return (
+                              category.categoryName !== "gift-cards" &&
+                              category.categoryName !== "packages"
+                            );
+                          })
+                          .map((category) => (
+                            <label
+                              key={category._id}
+                              className="inline-flex items-center cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                value={category._id}
+                                checked={category._id === selectedCategory}
+                                onChange={handleCategoryChange}
+                                className="cursor-pointer accent-slate-900"
+                              />
 
-                            <span className="ml-2">
-                              {convertCategoryTitle(category.categoryName)}
-                            </span>
-                          </label>
-                        ))}
+                              <span className="ml-2">
+                                {convertCategoryTitle(category.categoryName)}
+                              </span>
+                            </label>
+                          ))}
                     </div>
                   </div>
                 </div>

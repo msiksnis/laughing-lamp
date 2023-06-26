@@ -37,7 +37,7 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
 
   if (isValidating) {
     return (
-      <div className="flex justify-center items-center h-screen w-full">
+      <div className="flex justify-center mt-[35%] h-screen w-full">
         <Oval
           ariaLabel="loading-indicator"
           height={80}
