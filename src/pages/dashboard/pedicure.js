@@ -44,8 +44,8 @@ export default function PedicurePage({ initialPedicureServices, categories }) {
           width={80}
           strokeWidth={3}
           strokeWidthSecondary={3}
-          color="#FEF1F2"
-          secondaryColor="#FFCBCA"
+          color="#FFCBCA"
+          secondaryColor="#FEF1F2"
         />
       </div>
     );
