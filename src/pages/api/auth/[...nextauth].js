@@ -41,6 +41,13 @@ export default NextAuth({
   debug: true,
   secret: process.env.JWT_SECRET,
   callbacks: {
+    async signIn({ user, account, profile, credentials }) {
+      if (allowedEmails.includes(user.email) || credentials) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
@@ -53,5 +60,8 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       return session;
     },
+  },
+  pages: {
+    error: "/sign-in-error",
   },
 });
