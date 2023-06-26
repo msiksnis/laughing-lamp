@@ -38,7 +38,7 @@ export default function SkinCarePage({ initialSkinCareServices, categories }) {
 
   if (isValidating) {
     return (
-      <div className="flex justify-center translate-y-1/3 h-screen w-full">
+      <div className="flex justify-center translate-y-1/4 h-screen w-full">
         <Oval
           ariaLabel="loading-indicator"
           height={80}
